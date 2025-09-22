@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amref Website - Test Iframe Embedding</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .page-header {
+            background-color: #E30613;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .iframe-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        iframe {
+            width: 100%;
+            border: none;
+            display: block;
+        }
+
+        .test-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #E30613;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .responsive-test {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .test-device {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .device-header {
+            background: #333;
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .responsive-test {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>Amref Flying Doctors</h1>
+        <p>Nalatenschap - Test Pagina voor Calculator Embedding</p>
+    </div>
+
+    <div class="content-section">
+        <div class="test-info">
+            <h2>Iframe Embedding Test</h2>
+            <p>Deze pagina simuleert hoe de nalatenschap calculator eruit ziet wanneer deze is ingesloten in de Amref website als iframe.</p>
+        </div>
+
+        <h2>Nalatenschap Impact Calculator</h2>
+        <p>Ontdek welke impact uw nalatenschap kan hebben. Met onze interactieve calculator ziet u direct welke verandering u mogelijk maakt in het leven van mensen in Afrika.</p>
+
+        <div class="iframe-container">
+            <iframe
+                src="amref-nalatenschap-calculator.html"
+                height="800"
+                title="Amref Nalatenschap Impact Calculator"
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <div class="test-info">
+            <h3>Test Scenario's</h3>
+            <ul>
+                <li>✅ Volledige functionaliteit binnen iframe</li>
+                <li>✅ Responsive design op verschillende schermgroottes</li>
+                <li>✅ Form submission werkt correct</li>
+                <li>✅ JavaScript interactiviteit behouden</li>
+                <li>✅ CSS styling blijft intact</li>
+                <li>✅ Accessibility features werkend</li>
+            </ul>
+        </div>
+
+        <h2>Responsive Tests</h2>
+        <div class="responsive-test">
+            <div class="test-device">
+                <div class="device-header">Desktop View (800px height)</div>
+                <iframe
+                    src="amref-nalatenschap-calculator.html"
+                    height="600"
+                    style="min-width: 100%"
+                    title="Desktop View Calculator">
+                </iframe>
+            </div>
+
+            <div class="test-device">
+                <div class="device-header">Mobile View (400px width)</div>
+                <iframe
+                    src="amref-nalatenschap-calculator.html"
+                    height="600"
+                    style="width: 400px; max-width: 100%"
+                    title="Mobile View Calculator">
+                </iframe>
+            </div>
+        </div>
+
+        <div class="test-info">
+            <h3>Implementatie Instructies</h3>
+            <p>Om deze calculator toe te voegen aan de Amref website:</p>
+            <pre style="background: #f1f1f1; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>&lt;iframe
+    src="https://yourdomain.com/amref-nalatenschap-calculator.html"
+    width="100%"
+    height="800"
+    frameborder="0"
+    title="Amref Nalatenschap Impact Calculator"
+    loading="lazy"
+    style="border: none; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);"&gt;
+&lt;/iframe&gt;</code></pre>
+        </div>
+    </div>
+
+    <script>
+        // Test iframe communication
+        window.addEventListener('message', function(event) {
+            console.log('Message received from iframe:', event.data);
+
+            // Handle form submissions or other events from the calculator
+            if (event.data.type === 'formSubmitted') {
+                console.log('Form submitted in calculator:', event.data.formData);
+                // Here you could send the data to your CRM/email system
+            }
+
+            if (event.data.type === 'amountSelected') {
+                console.log('Amount selected:', event.data.amount);
+                // Track in parent page analytics if needed
+            }
+        });
+
+        // Test responsive behavior
+        function adjustIframeHeight() {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                iframe.onload = function() {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const height = iframeDoc.body.scrollHeight;
+                        iframe.style.height = height + 'px';
+                    } catch (e) {
+                        console.log('Cross-origin iframe height adjustment not possible');
+                    }
+                };
+            });
+        }
+
+        // Call on load
+        window.addEventListener('load', adjustIframeHeight);
+        window.addEventListener('resize', adjustIframeHeight);
+    </script>
+</body>
+</html>
