@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amref Nalatenschap Impact Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Amref Brand Colors & Typography */
+        :root {
+            --amref-red: #E30613;
+            --amref-green: #7CB342;
+            --amref-green-hover: #6BA644;
+            --amref-white: #FFFFFF;
+            --amref-light-gray: #F5F5F5;
+            --amref-text-dark: #333333;
+            --amref-text-black: #000000;
+            --amref-light-red: #FFF5F5;
+            --amref-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--amref-text-dark);
+            background-color: var(--amref-white);
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--amref-white);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header {
+            background-color: var(--amref-red);
+            color: var(--amref-white);
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .header-logo {
+            max-width: 180px;
+            height: auto;
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .main-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .intro-section h2 {
+            color: var(--amref-text-black);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--amref-shadow);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .calculator-section {
+            background: var(--amref-white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--amref-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .amount-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .amount-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--amref-white);
+            overflow: hidden;
+        }
+
+        .amount-card:hover {
+            border-color: var(--amref-red);
+            box-shadow: 0 4px 12px var(--amref-shadow);
+            transform: translateY(-2px);
+        }
+
+        .amount-card.selected {
+            border-color: var(--amref-red);
+            background: var(--amref-light-red);
+        }
+
+        .amount-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .amount-card-content {
+            padding: 1.5rem;
+        }
+
+        .amount-card .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--amref-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .amount-card .location {
+            font-size: 0.9rem;
+            color: var(--amref-text-dark);
+            font-weight: 600;
+        }
+
+        .impact-display {
+            background: var(--amref-light-gray);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-left: 4px solid var(--amref-red);
+            min-height: 150px;
+            display: none;
+        }
+
+        .impact-display.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .impact-title {
+            color: var(--amref-red);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .impact-description {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .impact-counter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--amref-white);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--amref-shadow);
+        }
+
+        .counter-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--amref-red);
+            margin-right: 1rem;
+        }
+
+        .counter-text {
+            font-size: 1.1rem;
+            color: var(--amref-text-dark);
+        }
+
+        .trust-indicators {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: var(--amref-light-gray);
+            border-radius: 8px;
+        }
+
+        .trust-badge {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--amref-text-dark);
+        }
+
+        .form-section {
+            background: var(--amref-white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--amref-shadow);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .form-section h3 {
+            color: var(--amref-text-black);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--amref-text-dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--amref-text-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--amref-red);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.2rem;
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--amref-green);
+            color: var(--amref-white);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--amref-green-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--amref-shadow);
+        }
+
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .africa-map {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: var(--amref-light-gray);
+            border-radius: 8px;
+        }
+
+        .map-title {
+            font-size: 1rem;
+            color: var(--amref-text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .map-placeholder {
+            width: 200px;
+            height: 200px;
+            background: var(--amref-white);
+            border: 2px solid var(--amref-red);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--amref-red);
+            font-weight: bold;
+        }
+
+        .footer {
+            background: var(--amref-light-gray);
+            padding: 3rem 1.5rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-logo {
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto 1rem;
+            display: block;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: var(--amref-text-dark);
+            line-height: 1.6;
+        }
+
+        .footer-text strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--amref-text-black);
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                margin: 0;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .header-logo {
+                max-width: 140px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .footer-logo {
+                max-width: 160px;
+            }
+
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .calculator-section,
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .amount-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .counter-number {
+                font-size: 2.5rem;
+            }
+
+            .trust-indicators {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .amount-card-image {
+                height: 150px;
+            }
+
+            .amount-card-content {
+                padding: 1rem;
+            }
+
+            .amount-card .amount {
+                font-size: 1.3rem;
+            }
+
+            .counter-number {
+                font-size: 2rem;
+            }
+
+            .impact-counter {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .counter-number {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <header class="header">
+            <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/amref-logo.png" alt="Amref Flying Doctors" class="header-logo">
+            <h1>Geef gezondheid. Geef toekomst.</h1>
+            <p>Medische zorg bereikbaar voor iedereen.<br>Ontdek welke impact uw nalatenschap kan maken!</p>
+        </header>
+
+        <main class="main-content">
+            <section class="intro-section">
+                <h2>Ontdek welke impact uw nalatenschap kan maken!</h2>
+                <p>Met de nalatenschaps-impactmeter ontdekt u welke duurzame impact úw nalatenschap heeft. Kies een bedrag en zie hoe u bijdraagt aan betere gezondheidszorg in Afrika: van het opleiden van lokale zorgverleners en veilige bevallingen tot schoon water en betaalbare zorg.</p>
+            </section>
+
+            <section class="calculator-section">
+                <div class="amount-selector">
+                    <div class="amount-card" data-amount="1000" data-location="Zuid-Soedan">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/hero.jpeg" alt="Kinderen vaccineren in Zuid-Soedan" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€1.000</div>
+                            <div class="location">Zuid-Soedan</div>
+                        </div>
+                    </div>
+                    <div class="amount-card" data-amount="5025" data-location="Tanzania">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-5025.JPG" alt="Veilige toiletten in Tanzania" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€5.025</div>
+                            <div class="location">Tanzania</div>
+                        </div>
+                    </div>
+                    <div class="amount-card" data-amount="12000" data-location="Zambia">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-12000.JPG" alt="Verpleegsters opleiden in Zambia" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€12.000</div>
+                            <div class="location">Zambia</div>
+                        </div>
+                    </div>
+                    <div class="amount-card" data-amount="21100" data-location="Kenia">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-21100.jpg" alt="Zonnepanelen voor kliniek in Kenia" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€21.100</div>
+                            <div class="location">Kenia</div>
+                        </div>
+                    </div>
+                    <div class="amount-card" data-amount="50400" data-location="Ethiopië">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-50400.jpg" alt="Zorg in afgelegen gebieden van Ethiopië" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€50.400</div>
+                            <div class="location">Ethiopië</div>
+                        </div>
+                    </div>
+                    <div class="amount-card" data-amount="146000" data-location="Kenia">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-146000.jpg" alt="Watersysteem voor scholen in Kenia" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€146.000</div>
+                            <div class="location">Kenia</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="impact-display" id="impactDisplay">
+                    <div class="impact-title" id="impactTitle"></div>
+                    <div class="impact-description" id="impactDescription"></div>
+                </div>
+
+                <div class="impact-counter" id="impactCounter" style="display: none;">
+                    <div class="counter-number" id="counterNumber">0</div>
+                    <div class="counter-text" id="counterText"></div>
+                </div>
+            </section>
+
+            <div class="trust-indicators">
+                <div class="trust-badge">
+                    <strong>ANBI Gecertificeerd</strong><br>
+                    Uw donatie is fiscaal aftrekbaar
+                </div>
+                <div class="trust-badge">
+                    <strong>68+ jaar ervaring</strong><br>
+                    Duurzame zorg in Afrika
+                </div>
+                <div class="trust-badge">
+                    <strong>Een Afrikaanse organisatie</strong><br>
+                    Samenwerking met gemeenschappen
+                </div>
+            </div>
+
+            <div class="africa-map">
+                <div class="map-title">Amref werkt in 35+ landen in Afrika</div>
+                <div class="map-placeholder">
+                    AFRIKA
+                </div>
+            </div>
+
+            <section class="form-section">
+                <h3>Ontvang meer informatie over nalatenschappen</h3>
+                <p>Wij sturen u graag onze nalaten-brochure toe met inspirerende persoonlijke verhalen en nuttige informatie over testamentair geven.</p>
+
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="fullName">Volledige naam *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">E-mailadres *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Telefoonnummer (optioneel)</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ageCategory">Leeftijdscategorie</label>
+                        <select id="ageCategory" name="ageCategory">
+                            <option value="">Selecteer uw leeftijd</option>
+                            <option value="45-54">45-54 jaar</option>
+                            <option value="55-64">55-64 jaar</option>
+                            <option value="65-74">65-74 jaar</option>
+                            <option value="75+">75+ jaar</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">Ja, ik wil graag de nieuwsbrief van Amref ontvangen met updates over onze projecten en impact.</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacy" name="privacy" required>
+                        <label for="privacy">Ik ga akkoord met de <a href="#" style="color: var(--amref-red);">privacyverklaring</a> van Amref en geef toestemming voor het verwerken van mijn gegevens. *</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
+                </form>
+            </section>
+
+            <footer class="footer">
+                <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/amref-logo.png" alt="Amref Flying Doctors" class="footer-logo">
+                <div class="footer-text">
+                    <strong>Amref Flying Doctors</strong>
+                    Duurzame gezondheidszorg in Afrika sinds 1957<br>
+                    Een Afrikaanse organisatie met 68+ jaar ervaring
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://pmdubdmaghyvibnopgcb.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZHViZG1hZ2h5dmlibm9wZ2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NTI0NjQsImV4cCI6MjA3NjEyODQ2NH0.TTcN29b6zP2xxB0oFot6iCEIBHM0tbzMtQbBWDiQ3ws';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Track selected amount globally
+        let selectedAmount = null;
+        let selectedLocation = null;
+
+        // Impact data voor elke donatie
+        const impactData = {
+            1000: {
+                title: "Bescherm de kleintjes",
+                description: "Uw nalatenschap redt levens. Voor slechts EUR 1.000 kunt u al 125 kinderen in Zuid-Soedan vaccineren tegen difterie, tetanus en kinkhoest. Dankzij deze bescherming krijgen zij de kans om gezond op te groeien, te dromen en een toekomst op te bouwen.",
+                counter: { number: 125, text: "kinderen gevaccineerd" }
+            },
+            5025: {
+                title: "Een eigen wc",
+                description: "Met €5.025 helpt u 75 gezinnen in Tanzania zélf een veilige en schone wc te realiseren. Zo krijgen kinderen en ouders een gezondere toekomst, verdwijnen ziektes zoals diarree en groeit trots en eigenaarschap in de gemeenschap: een duurzame oplossing, gedragen door de mensen zelf.",
+                counter: { number: 75, text: "gezinnen met een veilige wc" }
+            },
+            12000: {
+                title: "Verpleegsters in opleiding",
+                description: "U geeft 20 jonge vrouwen in Zambia de kans om een jaar lang verpleegkunde te studeren. Daarmee investeert u in duurzame en lokaal gewortelde zorg die levens blijft redden, generatie na generatie.",
+                counter: { number: 20, text: "verpleegsters opgeleid" }
+            },
+            21100: {
+                title: "'s Nachts ook veilig bevallen",
+                description: "Bevalling vinden vaak plaats als het buiten donker is. Door zonnepanelen op een kliniek te plaatsen zorgt u ervoor dat er ook 's nachts stroom is zodat moeders veiliger kunnen bevallen. Bovendien kunnen levensreddende medicijnen voor de gemeenschap gekoeldbewaard blijven. Eén kliniek ontvangt gemiddeld 1.200 mensen per maand.",
+                counter: { number: 1200, text: "mensen per maand geholpen" }
+            },
+            50400: {
+                title: "Zorg in de meest afgelegen gebieden",
+                description: "Uw nalatenschap geeft 17.000 mensen in de meest afgelegen gebieden medische zorg. Lokale gezondheidswerkers zorgen ervoor dat zorg zo bij de mensen terecht komt die het heel hard nodig hebben, maar voor wie een ziekenhuis te ver weg is.",
+                counter: { number: 17000, text: "mensen bereikt met zorg" }
+            },
+            146000: {
+                title: "Meisjes blijven op school",
+                description: "Met dit bedrag zorgt u er voor dat honderden meisjes op school kunnen blijven. Zij hoeven geen kilometers meer te lopen om water te halen met alle gevaren van dien, omdat u met dit bedrag een duurzaam watersysteem kan laten instaleren dat een hele (vaak afgelegen) gemeenschap voorziet van water.",
+                counter: { number: 3500, text: "mensen voorzien van water" }
+            }
+        };
+
+        // DOM elementen
+        const amountCards = document.querySelectorAll('.amount-card');
+        const impactDisplay = document.getElementById('impactDisplay');
+        const impactTitle = document.getElementById('impactTitle');
+        const impactDescription = document.getElementById('impactDescription');
+        const impactCounter = document.getElementById('impactCounter');
+        const counterNumber = document.getElementById('counterNumber');
+        const counterText = document.getElementById('counterText');
+        const contactForm = document.getElementById('contactForm');
+
+        // Event listeners voor bedrag selectie
+        amountCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove active class from all cards
+                amountCards.forEach(c => c.classList.remove('selected'));
+
+                // Add active class to clicked card
+                this.classList.add('selected');
+
+                // Get selected amount and location
+                const amount = parseInt(this.dataset.amount);
+                const location = this.dataset.location;
+
+                // Store globally for form submission
+                selectedAmount = amount;
+                selectedLocation = location;
+
+                // Show impact
+                showImpact(amount);
+
+                // Google Analytics tracking
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'amount_selected', {
+                        'event_category': 'calculator',
+                        'event_label': `€${amount.toLocaleString()}`,
+                        'value': amount
+                    });
+                }
+            });
+        });
+
+        function showImpact(amount) {
+            const impact = impactData[amount];
+
+            if (impact) {
+                // Update content
+                impactTitle.textContent = impact.title;
+                impactDescription.textContent = impact.description;
+
+                // Show impact display
+                impactDisplay.classList.add('active');
+
+                // Animate counter
+                animateCounter(impact.counter.number, impact.counter.text);
+            }
+        }
+
+        function animateCounter(targetNumber, text) {
+            impactCounter.style.display = 'flex';
+            counterText.textContent = text;
+
+            let currentNumber = 0;
+            const increment = targetNumber > 100 ? Math.ceil(targetNumber / 50) : 1;
+            const timer = setInterval(() => {
+                currentNumber += increment;
+                if (currentNumber >= targetNumber) {
+                    currentNumber = targetNumber;
+                    clearInterval(timer);
+                }
+                counterNumber.textContent = currentNumber.toLocaleString();
+            }, 30);
+        }
+
+        // Form submission with Supabase
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Basic validation
+            if (!data.fullName || !data.email || !data.privacy) {
+                alert('Vul alle verplichte velden in.');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                alert('Voer een geldig e-mailadres in.');
+                return;
+            }
+
+            // Disable submit button
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Versturen...';
+
+            try {
+                // Insert data into Supabase
+                const { data: insertData, error } = await supabase
+                    .from('nalatenschap_leads')
+                    .insert([
+                        {
+                            full_name: data.fullName,
+                            email: data.email,
+                            phone: data.phone || null,
+                            age_category: data.ageCategory || null,
+                            newsletter: data.newsletter === 'on',
+                            privacy_accepted: data.privacy === 'on',
+                            selected_amount: selectedAmount,
+                            selected_location: selectedLocation
+                        }
+                    ]);
+
+                if (error) {
+                    throw error;
+                }
+
+                // Google Analytics tracking
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submit', {
+                        'event_category': 'lead_generation',
+                        'event_label': 'nalatenschap_info_request',
+                        'value': selectedAmount
+                    });
+                }
+
+                // Show success message
+                alert('Bedankt voor uw interesse! U ontvangt binnen 2 werkdagen onze informatiebrochure.');
+
+                // Reset form
+                this.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Ja, ik wil meer informatie';
+
+                // Hide impact display
+                impactDisplay.classList.remove('active');
+                impactCounter.style.display = 'none';
+                amountCards.forEach(c => c.classList.remove('selected'));
+
+                // Reset selected amount
+                selectedAmount = null;
+                selectedLocation = null;
+
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Er is iets misgegaan bij het versturen. Probeer het later opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Ja, ik wil meer informatie';
+            }
+        });
+
+        // Google Analytics page view tracking
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                'page_title': 'Nalatenschap Calculator',
+                'page_location': window.location.href
+            });
+        }
+
+        // Track scroll depth for engagement
+        let maxScroll = 0;
+        window.addEventListener('scroll', function() {
+            const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+            if (scrollPercent > maxScroll) {
+                maxScroll = scrollPercent;
+                if (maxScroll >= 25 && maxScroll < 50 && typeof gtag !== 'undefined') {
+                    gtag('event', 'scroll_depth', {
+                        'event_category': 'engagement',
+                        'event_label': '25%'
+                    });
+                } else if (maxScroll >= 50 && maxScroll < 75 && typeof gtag !== 'undefined') {
+                    gtag('event', 'scroll_depth', {
+                        'event_category': 'engagement',
+                        'event_label': '50%'
+                    });
+                } else if (maxScroll >= 75 && typeof gtag !== 'undefined') {
+                    gtag('event', 'scroll_depth', {
+                        'event_category': 'engagement',
+                        'event_label': '75%'
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
