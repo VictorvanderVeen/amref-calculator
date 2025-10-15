@@ -687,6 +687,14 @@
 
                 // Animate counter
                 animateCounter(impact.counter.number, impact.counter.text);
+
+                // Smooth scroll to impact display (especially important on mobile)
+                setTimeout(() => {
+                    impactDisplay.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
             }
         }
 
