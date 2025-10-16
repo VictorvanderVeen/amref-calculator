@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amref Nalatenschap Impact Calculator</title>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WR7FXB');</script>
+    <!-- End Google Tag Manager -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* Amref Brand Colors & Typography */
         :root {
@@ -80,33 +90,12 @@
             object-position: center;
         }
 
-        .header-subtitle {
+        .header-logo {
             display: none;
         }
 
-        .header-description {
+        .header p {
             display: none;
-        }
-
-        .hero-cta {
-            display: inline-block;
-            background-color: var(--amref-white);
-            color: var(--amref-red);
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 30px;
-            text-decoration: none;
-            border: 2px solid var(--amref-white);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .hero-cta:hover {
-            background-color: var(--amref-red);
-            color: var(--amref-white);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
         .main-content {
@@ -133,6 +122,21 @@
             margin-right: auto;
         }
 
+        .hero-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--amref-shadow);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .calculator-section {
             background: var(--amref-white);
             border-radius: 8px;
@@ -151,11 +155,12 @@
         .amount-card {
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            padding: 1.5rem;
+            padding: 0;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             background: var(--amref-white);
+            overflow: hidden;
         }
 
         .amount-card:hover {
@@ -167,6 +172,17 @@
         .amount-card.selected {
             border-color: var(--amref-red);
             background: var(--amref-light-red);
+        }
+
+        .amount-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .amount-card-content {
+            padding: 1.5rem;
         }
 
         .amount-card .amount {
@@ -347,32 +363,30 @@
             box-shadow: none;
         }
 
-        .africa-map {
-            text-align: center;
-            margin: 2rem 0;
-            padding: 1rem;
+        .footer {
             background: var(--amref-light-gray);
-            border-radius: 8px;
+            padding: 3rem 1.5rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
         }
 
-        .map-title {
-            font-size: 1rem;
+        .footer-logo {
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto 1rem;
+            display: block;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
             color: var(--amref-text-dark);
-            margin-bottom: 1rem;
+            line-height: 1.6;
         }
 
-        .map-placeholder {
-            width: 200px;
-            height: 200px;
-            background: var(--amref-white);
-            border: 2px solid var(--amref-red);
-            border-radius: 50%;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--amref-red);
-            font-weight: bold;
+        .footer-text strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--amref-text-black);
         }
 
         @media (max-width: 768px) {
@@ -401,6 +415,14 @@
 
             .header-image-side {
                 min-height: 40vh;
+            }
+
+            .header-logo {
+                max-width: 140px;
+            }
+
+            .footer-logo {
+                max-width: 160px;
             }
 
             .main-content {
@@ -435,12 +457,11 @@
                 min-height: 35vh;
             }
 
-            .hero-cta {
-                padding: 0.9rem 2rem;
-                font-size: 1rem;
+            .amount-card-image {
+                height: 150px;
             }
 
-            .amount-card {
+            .amount-card-content {
                 padding: 1rem;
             }
 
@@ -465,13 +486,16 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WR7FXB"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div class="calculator-container">
         <header class="header">
             <div class="header-text-side">
                 <div class="header-content">
                     <h1>Geef gezondheid. Geef toekomst.</h1>
-                    <p class="header-subtitle">Bereken de impact van úw nalatenschap</p>
-                    <p class="header-description">Kies een bedrag en ontdek direct hoe u bijdraagt aan betere gezondheidszorg in Afrika.</p>
                 </div>
             </div>
             <div class="header-image-side">
@@ -481,31 +505,53 @@
 
         <main class="main-content">
             <section class="intro-section">
-                <h2>Bereken de impact van úw nalatenschap</h2>
-                <p>Kies een bedrag en ontdek direct hoe u bijdraagt aan betere gezondheidszorg in Afrika.</p>
+                <h2>Ontdek welke impact uw nalatenschap kan maken!</h2>
+                <p>Met de nalatenschaps-impactmeter ontdekt u welke duurzame impact úw nalatenschap heeft. Kies een bedrag en zie hoe u bijdraagt aan betere gezondheidszorg in Afrika: van het opleiden van lokale zorgverleners en veilige bevallingen tot schoon water en betaalbare zorg.</p>
             </section>
 
             <section class="calculator-section">
                 <div class="amount-selector">
                     <div class="amount-card" data-amount="1000" data-location="Zuid-Soedan">
-                        <div class="amount">€1.000</div>
-                        <div class="location">Zuid-Soedan</div>
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/hero.jpeg" alt="Kinderen vaccineren in Zuid-Soedan" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€1.000</div>
+                            <div class="location">Zuid-Soedan</div>
+                        </div>
+                    </div>
+                    <div class="amount-card" data-amount="5025" data-location="Tanzania">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-5025.JPG" alt="Veilige toiletten in Tanzania" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€5.025</div>
+                            <div class="location">Tanzania</div>
+                        </div>
                     </div>
                     <div class="amount-card" data-amount="12000" data-location="Zambia">
-                        <div class="amount">€12.000</div>
-                        <div class="location">Zambia</div>
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-12000.JPG" alt="Verpleegsters opleiden in Zambia" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€12.000</div>
+                            <div class="location">Zambia</div>
+                        </div>
                     </div>
                     <div class="amount-card" data-amount="21100" data-location="Kenia">
-                        <div class="amount">€21.100</div>
-                        <div class="location">Kenia</div>
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-21100.jpg" alt="Zonnepanelen voor kliniek in Kenia" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€21.100</div>
+                            <div class="location">Kenia</div>
+                        </div>
                     </div>
                     <div class="amount-card" data-amount="50400" data-location="Ethiopië">
-                        <div class="amount">€50.400</div>
-                        <div class="location">Ethiopië</div>
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-50400.jpg" alt="Zorg in afgelegen gebieden van Ethiopië" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€50.400</div>
+                            <div class="location">Ethiopië</div>
+                        </div>
                     </div>
                     <div class="amount-card" data-amount="146000" data-location="Kenia">
-                        <div class="amount">€146.000</div>
-                        <div class="location">Kenia</div>
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-146000.jpg" alt="Watersysteem voor scholen in Kenia" class="amount-card-image" loading="lazy">
+                        <div class="amount-card-content">
+                            <div class="amount">€146.000</div>
+                            <div class="location">Kenia</div>
+                        </div>
                     </div>
                 </div>
 
@@ -526,25 +572,18 @@
                     Uw donatie is fiscaal aftrekbaar
                 </div>
                 <div class="trust-badge">
-                    <strong>40+ jaar ervaring</strong><br>
+                    <strong>68+ jaar ervaring</strong><br>
                     Duurzame zorg in Afrika
                 </div>
                 <div class="trust-badge">
-                    <strong>Lokaal geworteld</strong><br>
+                    <strong>Een Afrikaanse organisatie</strong><br>
                     Samenwerking met gemeenschappen
                 </div>
             </div>
 
-            <div class="africa-map">
-                <div class="map-title">Amref werkt in 35+ landen in Afrika</div>
-                <div class="map-placeholder">
-                    AFRIKA
-                </div>
-            </div>
-
             <section class="form-section">
-                <h3>Ontvang meer informatie over nalatenschap</h3>
-                <p>Wij sturen u graag onze informatiebrochure toe met persoonlijke verhalen en praktische informatie over testamentair geven.</p>
+                <h3>Ontvang meer informatie over nalatenschappen</h3>
+                <p>Wij sturen u graag onze nalaten-brochure toe met inspirerende persoonlijke verhalen en nuttige informatie over testamentair geven.</p>
 
                 <form id="contactForm">
                     <div class="form-group">
@@ -586,36 +625,59 @@
                     <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
                 </form>
             </section>
+
+            <footer class="footer">
+                <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/amref-logo.png" alt="Amref Flying Doctors" class="footer-logo">
+                <div class="footer-text">
+                    <strong>Amref Flying Doctors</strong>
+                    Duurzame gezondheidszorg in Afrika sinds 1957<br>
+                    Een Afrikaanse organisatie met 68+ jaar ervaring
+                </div>
+            </footer>
         </main>
     </div>
 
     <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://pmdubdmaghyvibnopgcb.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZHViZG1hZ2h5dmlibm9wZ2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NTI0NjQsImV4cCI6MjA3NjEyODQ2NH0.TTcN29b6zP2xxB0oFot6iCEIBHM0tbzMtQbBWDiQ3ws';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Track selected amount globally
+        let selectedAmount = null;
+        let selectedLocation = null;
+
         // Impact data voor elke donatie
         const impactData = {
             1000: {
-                title: "Een geschenk dat generaties beschermt",
-                description: "Uw nalatenschap redt levens. Voor slechts EUR 1.000 kunt u al 125 kinderen vaccineren tegen difterie, tetanus en kinkhoest. Dankzij deze bescherming krijgen zij de kans om gezond op te groeien, te dromen en een toekomst op te bouwen.",
+                title: "Bescherm de kleintjes",
+                description: "Uw nalatenschap redt levens. Voor slechts EUR 1.000 kunt u al 125 kinderen in Zuid-Soedan vaccineren tegen difterie, tetanus en kinkhoest. Dankzij deze bescherming krijgen zij de kans om gezond op te groeien, te dromen en een toekomst op te bouwen.",
                 counter: { number: 125, text: "kinderen gevaccineerd" }
+            },
+            5025: {
+                title: "Een eigen wc",
+                description: "Met €5.025 helpt u 75 gezinnen in Tanzania zélf een veilige en schone wc te realiseren. Zo krijgen kinderen en ouders een gezondere toekomst, verdwijnen ziektes zoals diarree en groeit trots en eigenaarschap in de gemeenschap: een duurzame oplossing, gedragen door de mensen zelf.",
+                counter: { number: 75, text: "gezinnen met een veilige wc" }
             },
             12000: {
                 title: "Verpleegsters in opleiding",
-                description: "U geeft 20 jonge vrouwen de kans om een jaar lang verpleegkunde te studeren. Daarmee investeert u in duurzame en lokaal gewortelde zorg die levens blijft redden, generatie na generatie.",
+                description: "U geeft 20 jonge vrouwen in Zambia de kans om een jaar lang verpleegkunde te studeren. Daarmee investeert u in duurzame en lokaal gewortelde zorg die levens blijft redden, generatie na generatie.",
                 counter: { number: 20, text: "verpleegsters opgeleid" }
             },
             21100: {
-                title: "Ook 's nachts veilig bevallen",
-                description: "Bevalling vinden vaak plaats als het buiten donker is. Door zonnepanelen op een kliniek te plaatsen zorgt u ervoor dat er ook 's nachts stroom is zodat moeders veiliger kunnen bevallen. Bovendien kunnen levensreddende medicijnen voor de gemeenschap gekoeldbewaard blijven.",
-                counter: { number: 1, text: "kliniek van zonnepanelen voorzien" }
+                title: "'s Nachts ook veilig bevallen",
+                description: "Bevalling vinden vaak plaats als het buiten donker is. Door zonnepanelen op een kliniek te plaatsen zorgt u ervoor dat er ook 's nachts stroom is zodat moeders veiliger kunnen bevallen. Bovendien kunnen levensreddende medicijnen voor de gemeenschap gekoeldbewaard blijven. Eén kliniek ontvangt gemiddeld 1.200 mensen per maand.",
+                counter: { number: 1200, text: "mensen per maand geholpen" }
             },
             50400: {
-                title: "Ook in afgelegen plekken zorg",
-                description: "Uw nalatenschap geeft 17.000 mensen in de meest afgelegen gebieden medische zorg. Lokale gezondheidswerkers zorgen ervoor dat zorg zo bij de mensen terecht komt voor wie een ziekenhuis te ver weg is.",
+                title: "Zorg in de meest afgelegen gebieden",
+                description: "Uw nalatenschap geeft 17.000 mensen in de meest afgelegen gebieden medische zorg. Lokale gezondheidswerkers zorgen ervoor dat zorg zo bij de mensen terecht komt die het heel hard nodig hebben, maar voor wie een ziekenhuis te ver weg is.",
                 counter: { number: 17000, text: "mensen bereikt met zorg" }
             },
             146000: {
                 title: "Meisjes blijven op school",
-                description: "Met dit bedrag zorgt u er voor dat honderden meisjes op school kunnen blijven. Zij hoeven geen kilometers meer te lopen om water te halen met alle gevaren van dien, omdat wij met dit bedrag een duurzaam watersysteem kunnen instaleren dat een hele (vaak afgelegen) community voorziet van water.",
-                counter: { number: 500, text: "meisjes kunnen naar school blijven" }
+                description: "Met dit bedrag zorgt u er voor dat honderden meisjes op school kunnen blijven. Zij hoeven geen kilometers meer te lopen om water te halen met alle gevaren van dien, omdat u met dit bedrag een duurzaam watersysteem kan laten instaleren dat een hele (vaak afgelegen) gemeenschap voorziet van water.",
+                counter: { number: 3500, text: "mensen voorzien van water" }
             }
         };
 
@@ -638,8 +700,13 @@
                 // Add active class to clicked card
                 this.classList.add('selected');
 
-                // Get selected amount
+                // Get selected amount and location
                 const amount = parseInt(this.dataset.amount);
+                const location = this.dataset.location;
+
+                // Store globally for form submission
+                selectedAmount = amount;
+                selectedLocation = location;
 
                 // Show impact
                 showImpact(amount);
@@ -668,6 +735,14 @@
 
                 // Animate counter
                 animateCounter(impact.counter.number, impact.counter.text);
+
+                // Smooth scroll to impact display (especially important on mobile)
+                setTimeout(() => {
+                    impactDisplay.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
             }
         }
 
@@ -687,8 +762,8 @@
             }, 30);
         }
 
-        // Form submission
-        contactForm.addEventListener('submit', function(e) {
+        // Form submission with Supabase
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const formData = new FormData(this);
@@ -712,18 +787,35 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Versturen...';
 
-            // Google Analytics tracking
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submit', {
-                    'event_category': 'lead_generation',
-                    'event_label': 'nalatenschap_info_request'
-                });
-            }
+            try {
+                // Insert data into Supabase
+                const { data: insertData, error } = await supabase
+                    .from('nalatenschap_leads')
+                    .insert([
+                        {
+                            full_name: data.fullName,
+                            email: data.email,
+                            phone: data.phone || null,
+                            age_category: data.ageCategory || null,
+                            newsletter: data.newsletter === 'on',
+                            privacy_accepted: data.privacy === 'on',
+                            selected_amount: selectedAmount,
+                            selected_location: selectedLocation
+                        }
+                    ]);
 
-            // Simulate form submission (replace with actual endpoint)
-            setTimeout(() => {
-                // Replace this with actual form submission to your endpoint
-                console.log('Form data:', data);
+                if (error) {
+                    throw error;
+                }
+
+                // Google Analytics tracking
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submit', {
+                        'event_category': 'lead_generation',
+                        'event_label': 'nalatenschap_info_request',
+                        'value': selectedAmount
+                    });
+                }
 
                 // Show success message
                 alert('Bedankt voor uw interesse! U ontvangt binnen 2 werkdagen onze informatiebrochure.');
@@ -738,7 +830,16 @@
                 impactCounter.style.display = 'none';
                 amountCards.forEach(c => c.classList.remove('selected'));
 
-            }, 1000);
+                // Reset selected amount
+                selectedAmount = null;
+                selectedLocation = null;
+
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Er is iets misgegaan bij het versturen. Probeer het later opnieuw.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Ja, ik wil meer informatie';
+            }
         });
 
         // Google Analytics page view tracking
