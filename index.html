@@ -182,7 +182,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background: var(--amref-white);
-            overflow: hidden;
+            overflow: hidden
+            display: block;
+            width: 100%;
+            font-family: inherit;
+}
         }
 
         .amount-card:hover {
@@ -195,6 +199,15 @@
         .amount-card.selected {
             border-color: var(--amref-red);
             background: var(--amref-light-red);
+        }
+
+        .amount-card:focus {
+        outline: 3px solid var(--amref-red);
+        outline-offset: 2px;
+        }
+
+        .amount-card:active {
+        transform: translateY(-6px);
         }
 
         .amount-card-image {
@@ -543,49 +556,48 @@
                 <h2 style="text-align: center; margin-bottom: 1rem; font-size: 1.5rem; color: #000;">Uw nalatenschap voor betere zorg in Afrika</h2>
                 <p class="calculator-intro"><strong>Kies een bedrag en ontdek welke impact ú maakt</strong></p>
                 <div class="amount-selector">
-                    <div class="amount-card" data-amount="1000" data-location="Zuid-Soedan">
-                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-1000.jpg" alt="Kinderen vaccineren in Zuid-Soedan" class="amount-card-image" loading="lazy">
+                <button type="button" class="amount-card" data-amount="1000" data-location="Zuid-Soedan" data-project="Vaccineer de kleintjes" aria-label="Selecteer €1.000 voor Vaccineer de kleintjes in Zuid-Soedan">                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-1000.jpg" alt="Kinderen vaccineren in Zuid-Soedan" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€1.000</div>
                             <div class="location">Vaccineer de kleintjes</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="5025" data-location="Tanzania">
+                   </button>
+                   <button type="button" class="amount-card" data-amount="5025" data-location="Tanzania" data-project="Een eigen WC" aria-label="Selecteer €5.025 voor Een eigen WC in Tanzania">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-5025.jpg" alt="Veilige toiletten in Tanzania" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€5.025</div>
                             <div class="location">Een eigen WC</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="12000" data-location="Zambia">
+                   </button>
+                    <button type="button" class="amount-card" data-amount="12000" data-location="Zambia" data-project="Verpleegsters in opleiding" aria-label="Selecteer €12.000 voor Verpleegsters in opleiding in Zambia">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-12000.jpg" alt="Verpleegsters opleiden in Zambia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€12.000</div>
                             <div class="location">Verpleegsters in opleiding</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="21100" data-location="Kenia">
+                   </button>
+                    <button type="button" class="amount-card" data-amount="21100" data-location="Kenia" data-project="Altijd hulp door zonnepanelen" aria-label="Selecteer €21.100 voor Altijd hulp door zonnepanelen in Kenia">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-21100.jpeg" alt="Zonnepanelen voor ziekenhuis in Kenia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€21.100</div>
                             <div class="location">Altijd hulp door zonnepanelen</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="50400" data-location="Ethiopië">
+                    </button>
+                    <button type="button" class="amount-card" data-amount="50400" data-location="Ethiopië" data-project="Outreach" aria-label="Selecteer €50.400 voor Outreach in Ethiopië">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-50400.jpg" alt="Zorg in afgelegen gebieden van Ethiopië" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€50.400</div>
                             <div class="location">Outreach</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="146000" data-location="Kenia">
+                   </button>
+                   <button type="button" class="amount-card" data-amount="146000" data-location="Kenia" data-project="Meisjes blijven op school" aria-label="Selecteer €146.000 voor Meisjes blijven op school in Kenia">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-146000.jpeg" alt="Watersysteem voor scholen in Kenia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€146.000</div>
                             <div class="location">Meisjes blijven op school</div>
                         </div>
                     </div>
-                </div>
+               </button>
 
                 <div class="impact-display" id="impactDisplay">
                     <div class="impact-title" id="impactTitle"></div>
@@ -680,6 +692,7 @@
         // Track selected amount globally
         let selectedAmount = null;
         let selectedLocation = null;
+        let selectedProject = null;
 
         // Impact data voor elke donatie
         const impactData = {
@@ -725,25 +738,37 @@
         const counterText = document.getElementById('counterText');
         const contactForm = document.getElementById('contactForm');
 
-        // Event listeners voor bedrag selectie
-        amountCards.forEach(card => {
-            card.addEventListener('click', function() {
-                // Remove active class from all cards
-                amountCards.forEach(c => c.classList.remove('selected'));
+       // Event listeners voor bedrag selectie
+    amountCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove active class from all cards
+            amountCards.forEach(c => c.classList.remove('selected'));
 
-                // Add active class to clicked card
-                this.classList.add('selected');
+            // Add active class to clicked card
+            this.classList.add('selected');
 
-                // Get selected amount and location
-                const amount = parseInt(this.dataset.amount);
-                const location = this.dataset.location;
+           // Get selected amount and location
+            const amount = parseInt(this.dataset.amount);
+            const location = this.dataset.location;
+            const project = this.dataset.project;
 
-                // Store globally for form submission
-                selectedAmount = amount;
-                selectedLocation = location;
+            // Store globally for form submission
+            selectedAmount = amount;
+            selectedLocation = location;
+            selectedProject = project;
 
-                // Show impact
-                showImpact(amount);
+            // Push to dataLayer for GTM
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'donation_option_click',
+                'donation_amount': amount,
+                'donation_location': location,
+                'donation_project': project,
+                'donation_amount_formatted': '€' + amount.toLocaleString()
+            });
+
+        // Show impact
+        showImpact(amount);
 
                 // Google Analytics tracking
                 if (typeof gtag !== 'undefined') {
