@@ -316,6 +316,24 @@
             box-shadow: 0 2px 10px var(--amref-shadow);
             padding: 2rem;
             margin-top: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .form-section-image {
+            flex-shrink: 0;
+            width: 250px;
+        }
+
+        .form-section-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .form-section-content {
+            flex: 1;
         }
 
         .form-section h3 {
@@ -328,8 +346,12 @@
 
         .form-section p {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             color: var(--amref-text-dark);
+        }
+
+        .form-section p:last-of-type {
+            margin-bottom: 2rem;
         }
 
         .form-group {
@@ -482,6 +504,16 @@
             .calculator-section,
             .form-section {
                 padding: 1.5rem;
+            }
+
+            .form-section {
+                flex-direction: column;
+            }
+
+            .form-section-image {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
             }
 
             .amount-selector {
@@ -674,20 +706,30 @@
             </div>
 
             <section class="form-section">
-                <h3>Ontvang meer informatie over nalatenschappen</h3>
-                <p>Wij sturen u graag onze nalaten-brochure toe met inspirerende persoonlijke verhalen en nuttige informatie over testamentair geven.</p>
+                <div class="form-section-image">
+                    <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/FJ.jpg" alt="Floortje - Persoonlijke contactpersoon Amref" loading="lazy">
+                </div>
+                <div class="form-section-content">
+                    <h3>Geïnspireerd door uw impact? Ik help u graag persoonlijk verder.</h3>
+                    <p>Hallo, ik ben Floortje, uw persoonlijke contactpersoon voor nalaten bij Amref.</p>
+                    <p>U heeft zojuist de Impact Calculator gebruikt om te zien wat er mogelijk is. Fantastisch.</p>
+                    <p>Wilt u een persoonlijk overzicht ontvangen van de projecten die u heeft gekozen? Geen algemene brochure, maar een 'Impact Dossier' dat ik speciaal voor u samenstel.</p>
+                    <p>Vul hieronder uw naam en e-mailadres in, en ik stuur u persoonlijk een e-mail. Dan beginnen we vanaf daar het gesprek. Vrijblijvend, natuurlijk.</p>
 
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="fullName">Volledige naam *</label>
-                        <input type="text" id="fullName" name="fullName" required>
-                    </div>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="fullName">Volledige naam *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="email">E-mailadres *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="email">E-mailadres *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
 
+                        <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
+                    </form>
+                </div>
                     <div class="form-group">
                         <label for="phone">Telefoonnummer (optioneel)</label>
                         <input type="tel" id="phone" name="phone">
