@@ -311,25 +311,33 @@
         }
 
         .form-section {
-            background: var(--amref-white);
-            border-radius: 8px;
+            background: #FAFAFA;
+            border-radius: 12px;
             box-shadow: 0 2px 10px var(--amref-shadow);
-            padding: 2rem;
+            padding: 50px;
             margin-top: 2rem;
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 3rem;
+            align-items: start;
         }
 
         .form-section-image {
             flex-shrink: 0;
-            width: 250px;
+            width: 180px;
         }
 
         .form-section-image img {
             width: 100%;
-            height: auto;
-            border-radius: 8px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .form-section-image img:hover {
+            transform: scale(1.02);
         }
 
         .form-section-content {
@@ -338,16 +346,24 @@
 
         .form-section h3 {
             color: var(--amref-text-black);
-            font-size: 1.4rem;
-            font-weight: bold;
+            font-size: 1.75rem;
+            font-weight: 600;
             margin-bottom: 1rem;
-            text-align: center;
+            text-align: left;
+            line-height: 1.3;
         }
 
         .form-section p {
-            text-align: center;
+            text-align: left;
             margin-bottom: 1rem;
             color: var(--amref-text-dark);
+            line-height: 1.6;
+        }
+
+        .form-section p:first-of-type {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--amref-text-black);
         }
 
         .form-section p:last-of-type {
@@ -356,29 +372,44 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            max-width: 400px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--amref-text-dark);
+            font-weight: 400;
+            font-size: 0.875rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 4px;
+            padding: 12px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .form-group input:hover {
+            border-color: #bbb;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: var(--amref-red);
+            border-color: var(--amref-green);
+            box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.1);
         }
 
         .checkbox-group {
@@ -399,23 +430,29 @@
         }
 
         .submit-btn {
-            width: 100%;
-            background-color: var(--amref-green);
+            max-width: 400px;
+            background-color: #8BC34A;
             color: var(--amref-white);
             border: none;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 25px;
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 2px 8px rgba(124, 179, 66, 0.2);
         }
 
         .submit-btn:hover {
-            background-color: var(--amref-green-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px var(--amref-shadow);
+            background-color: var(--amref-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(124, 179, 66, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(124, 179, 66, 0.2);
         }
 
         .submit-btn:disabled {
@@ -503,17 +540,40 @@
 
             .calculator-section,
             .form-section {
-                padding: 1.5rem;
+                padding: 2rem 1.5rem;
             }
 
             .form-section {
-                flex-direction: column;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 30px 20px;
+                text-align: center;
+            }
+
+            .form-section h3 {
+                text-align: center;
+                font-size: 1.5rem;
+            }
+
+            .form-section p {
+                text-align: center;
             }
 
             .form-section-image {
-                width: 100%;
-                max-width: 300px;
+                width: 150px;
                 margin: 0 auto;
+            }
+
+            .form-section-image img {
+                height: 150px;
+            }
+
+            .form-group {
+                max-width: 100%;
+            }
+
+            .submit-btn {
+                max-width: 100%;
             }
 
             .amount-selector {
@@ -711,24 +771,24 @@
                     <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/FJ.jpg" alt="Floortje - Persoonlijke contactpersoon Amref" loading="lazy">
                 </div>
                 <div class="form-section-content">
-                    <h3>Geïnspireerd door uw impact? Ik help u graag persoonlijk verder.</h3>
-                    <p>Hallo, ik ben Floortje, uw persoonlijke contactpersoon voor nalaten bij Amref.</p>
+                    <h3>Geïnspireerd door uw impact? Ik help u graag verder.</h3>
+                    <p>Hallo, ik ben Floortje van Amref.</p>
                     <p>U heeft zojuist de Impact Calculator gebruikt om te zien wat er mogelijk is. Fantastisch.</p>
                     <p>Wilt u een persoonlijk overzicht ontvangen van de projecten die u heeft gekozen? Geen algemene brochure, maar een 'Impact Dossier' dat ik speciaal voor u samenstel.</p>
                     <p>Vul hieronder uw naam en e-mailadres in, en ik stuur u persoonlijk een e-mail. Dan beginnen we vanaf daar het gesprek. Vrijblijvend, natuurlijk.</p>
 
                     <form id="contactForm">
                         <div class="form-group">
-                            <label for="fullName">Volledige naam *</label>
-                            <input type="text" id="fullName" name="fullName" required>
+                            <label for="fullName">Volledige naam</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="Bijvoorbeeld: Jan de Vries" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="email">E-mailadres *</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="email">E-mailadres</label>
+                            <input type="email" id="email" name="email" placeholder="naam@voorbeeld.nl" required>
                         </div>
 
-                        <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
+                        <button type="submit" class="submit-btn">Ja, Floortje, ik ontvang graag het dossier</button>
                     </form>
                 </div>
             </section>
