@@ -182,11 +182,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background: var(--amref-white);
-            overflow: hidden
+            overflow: hidden;
             display: block;
             width: 100%;
             font-family: inherit;
-}
         }
 
         .amount-card:hover {
@@ -562,6 +561,51 @@
                 margin-bottom: 0.5rem;
             }
         }
+
+        /* Toast notification styles */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--amref-white);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            max-width: 90%;
+            width: auto;
+            min-width: 300px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--amref-red);
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-notification.success {
+            border-left-color: var(--amref-green);
+        }
+
+        .toast-notification.error {
+            border-left-color: var(--amref-red);
+        }
+
+        .toast-notification .toast-message {
+            font-size: 1rem;
+            color: var(--amref-text-dark);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .toast-notification {
+                min-width: 280px;
+                max-width: 95%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -569,6 +613,11 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WR7FXB"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Toast notification -->
+    <div id="toastNotification" class="toast-notification">
+        <div class="toast-message" id="toastMessage"></div>
+    </div>
 
     <div class="calculator-container">
         <header class="header">
@@ -628,8 +677,7 @@
                             <div class="amount">€146.000</div>
                             <div class="location">Meisjes blijven op school</div>
                         </div>
-                    </div>
-               </button>
+                   </button>
 
                 <div class="impact-display" id="impactDisplay">
                     <div class="impact-title" id="impactTitle"></div>
@@ -682,6 +730,34 @@
                         <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
                     </form>
                 </div>
+                    <div class="form-group">
+                        <label for="phone">Telefoonnummer (optioneel)</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ageCategory">Leeftijdscategorie</label>
+                        <select id="ageCategory" name="ageCategory">
+                            <option value="">Selecteer uw leeftijd</option>
+                            <option value="45-54">45-54 jaar</option>
+                            <option value="55-64">55-64 jaar</option>
+                            <option value="65-74">65-74 jaar</option>
+                            <option value="75+">75+ jaar</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">Ja, ik wil graag de nieuwsbrief van Amref ontvangen met updates over onze projecten en impact.</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacy" name="privacy" required>
+                        <label for="privacy">Ik ga akkoord met de <a href="https://www.amref.nl/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--amref-red);">privacyverklaring</a> van Amref en geef toestemming voor het verwerken van mijn gegevens. *</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
+                </form>
             </section>
 
             <footer class="footer">
@@ -707,6 +783,25 @@
         let selectedAmount = null;
         let selectedLocation = null;
         let selectedProject = null;
+
+        // Toast notification function
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toastNotification');
+            const toastMessage = document.getElementById('toastMessage');
+
+            toastMessage.textContent = message;
+            toast.className = 'toast-notification ' + type;
+
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+
+            // Hide toast after 4 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
 
         // Impact data voor elke donatie
         const impactData = {
@@ -843,6 +938,8 @@
             const data = Object.fromEntries(formData);
 
             // Basic validation
+            if (!data.fullName || !data.email || !data.privacy) {
+                showToast('Vul alle verplichte velden in.', 'error');
             if (!data.fullName || !data.email) {
                 alert('Vul alle verplichte velden in.');
                 return;
@@ -851,7 +948,7 @@
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(data.email)) {
-                alert('Voer een geldig e-mailadres in.');
+                showToast('Voer een geldig e-mailadres in.', 'error');
                 return;
             }
 
@@ -887,7 +984,7 @@
                 }
 
                 // Show success message
-                alert('Bedankt voor uw interesse! U ontvangt binnen zo snel mogelijk onze informatiebrochure.');
+                showToast('Bedankt voor uw interesse! U ontvangt binnen zo snel mogelijk onze informatiebrochure.', 'success');
 
                 // Reset form
                 this.reset();
@@ -905,7 +1002,7 @@
 
             } catch (error) {
                 console.error('Error submitting form:', error);
-                alert('Er is iets misgegaan bij het versturen. Probeer het later opnieuw.');
+                showToast('Er is iets misgegaan bij het versturen. Probeer het later opnieuw.', 'error');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Ja, ik wil meer informatie';
             }
