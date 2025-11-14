@@ -898,6 +898,8 @@
             // Basic validation
             if (!data.fullName || !data.email || !data.privacy) {
                 showToast('Vul alle verplichte velden in.', 'error');
+            if (!data.fullName || !data.email) {
+                alert('Vul alle verplichte velden in.');
                 return;
             }
 
@@ -921,10 +923,6 @@
                         {
                             full_name: data.fullName,
                             email: data.email,
-                            phone: data.phone || null,
-                            age_category: data.ageCategory || null,
-                            newsletter: data.newsletter === 'on',
-                            privacy_accepted: data.privacy === 'on',
                             selected_amount: selectedAmount,
                             selected_location: selectedLocation
                         }
