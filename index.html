@@ -183,6 +183,9 @@
             transition: all 0.3s ease;
             background: var(--amref-white);
             overflow: hidden;
+            display: block;
+            width: 100%;
+            font-family: inherit;
         }
 
         .amount-card:hover {
@@ -195,6 +198,15 @@
         .amount-card.selected {
             border-color: var(--amref-red);
             background: var(--amref-light-red);
+        }
+
+        .amount-card:focus {
+        outline: 3px solid var(--amref-red);
+        outline-offset: 2px;
+        }
+
+        .amount-card:active {
+        transform: translateY(-6px);
         }
 
         .amount-card-image {
@@ -304,6 +316,24 @@
             box-shadow: 0 2px 10px var(--amref-shadow);
             padding: 2rem;
             margin-top: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .form-section-image {
+            flex-shrink: 0;
+            width: 250px;
+        }
+
+        .form-section-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .form-section-content {
+            flex: 1;
         }
 
         .form-section h3 {
@@ -316,8 +346,12 @@
 
         .form-section p {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             color: var(--amref-text-dark);
+        }
+
+        .form-section p:last-of-type {
+            margin-bottom: 2rem;
         }
 
         .form-group {
@@ -472,6 +506,16 @@
                 padding: 1.5rem;
             }
 
+            .form-section {
+                flex-direction: column;
+            }
+
+            .form-section-image {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
             .amount-selector {
                 grid-template-columns: 1fr;
             }
@@ -517,6 +561,51 @@
                 margin-bottom: 0.5rem;
             }
         }
+
+        /* Toast notification styles */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--amref-white);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            max-width: 90%;
+            width: auto;
+            min-width: 300px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--amref-red);
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-notification.success {
+            border-left-color: var(--amref-green);
+        }
+
+        .toast-notification.error {
+            border-left-color: var(--amref-red);
+        }
+
+        .toast-notification .toast-message {
+            font-size: 1rem;
+            color: var(--amref-text-dark);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .toast-notification {
+                min-width: 280px;
+                max-width: 95%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -525,12 +614,17 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
+    <!-- Toast notification -->
+    <div id="toastNotification" class="toast-notification">
+        <div class="toast-message" id="toastMessage"></div>
+    </div>
+
     <div class="calculator-container">
         <header class="header">
             <div class="header-content">
                 <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/amref-logo.png" alt="Amref Health Africa" class="header-logo">
                 <div class="header-text">
-                    <h1>Geef gezondheid. Geef toekomst.<br>Ontdek net als Wim en Agnes uw impact.</h1>
+                    <h1>Geef gezondheid. Geef toekomst.<br>Maak medische zorg bereikbaar voor iedereen. <br>Ontdek nu net als Wim en Agnes uw impact.</h1>
                 </div>
             </div>
             <div class="header-image-container">
@@ -541,51 +635,49 @@
         <main class="main-content">
             <section class="calculator-section">
                 <h2 style="text-align: center; margin-bottom: 1rem; font-size: 1.5rem; color: #000;">Uw nalatenschap voor betere zorg in Afrika</h2>
-                <p class="calculator-intro"><strong>Kies een bedrag en ontdek welke impact ú maakt.</strong></p>
+                <p class="calculator-intro"><strong>Kies een bedrag en ontdek welke impact ú maakt</strong></p>
                 <div class="amount-selector">
-                    <div class="amount-card" data-amount="1000" data-location="Zuid-Soedan">
-                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-1000.jpg" alt="Kinderen vaccineren in Zuid-Soedan" class="amount-card-image" loading="lazy">
+                <button type="button" class="amount-card" data-amount="1000" data-location="Zuid-Soedan" data-project="Vaccineer de kleintjes" aria-label="Selecteer €1.000 voor Vaccineer de kleintjes in Zuid-Soedan">                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-1000.jpg" alt="Kinderen vaccineren in Zuid-Soedan" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€1.000</div>
-                            <div class="location">Zuid-Soedan</div>
+                            <div class="location">Vaccineer de kleintjes</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="5025" data-location="Tanzania">
+                   </button>
+                   <button type="button" class="amount-card" data-amount="5025" data-location="Tanzania" data-project="Een eigen WC" aria-label="Selecteer €5.025 voor Een eigen WC in Tanzania">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-5025.jpg" alt="Veilige toiletten in Tanzania" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€5.025</div>
-                            <div class="location">Tanzania</div>
+                            <div class="location">Een eigen WC</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="12000" data-location="Zambia">
+                   </button>
+                    <button type="button" class="amount-card" data-amount="12000" data-location="Zambia" data-project="Verpleegsters in opleiding" aria-label="Selecteer €12.000 voor Verpleegsters in opleiding in Zambia">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-12000.jpg" alt="Verpleegsters opleiden in Zambia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€12.000</div>
-                            <div class="location">Zambia</div>
+                            <div class="location">Verpleegsters in opleiding</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="21100" data-location="Kenia">
-                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-21100.jpeg" alt="Zonnepanelen voor kliniek in Kenia" class="amount-card-image" loading="lazy">
+                   </button>
+                    <button type="button" class="amount-card" data-amount="21100" data-location="Kenia" data-project="Altijd hulp door zonnepanelen" aria-label="Selecteer €21.100 voor Altijd hulp door zonnepanelen in Kenia">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-21100.jpeg" alt="Zonnepanelen voor ziekenhuis in Kenia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€21.100</div>
-                            <div class="location">Kenia</div>
+                            <div class="location">Altijd hulp door zonnepanelen</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="50400" data-location="Ethiopië">
+                    </button>
+                    <button type="button" class="amount-card" data-amount="50400" data-location="Ethiopië" data-project="Outreach" aria-label="Selecteer €50.400 voor Outreach in Ethiopië">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-50400.jpg" alt="Zorg in afgelegen gebieden van Ethiopië" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€50.400</div>
-                            <div class="location">Ethiopië</div>
+                            <div class="location">Outreach</div>
                         </div>
-                    </div>
-                    <div class="amount-card" data-amount="146000" data-location="Kenia">
+                   </button>
+                   <button type="button" class="amount-card" data-amount="146000" data-location="Kenia" data-project="Meisjes blijven op school" aria-label="Selecteer €146.000 voor Meisjes blijven op school in Kenia">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-146000.jpeg" alt="Watersysteem voor scholen in Kenia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="amount">€146.000</div>
-                            <div class="location">Kenia</div>
+                            <div class="location">Meisjes blijven op school</div>
                         </div>
-                    </div>
-                </div>
+                   </button>
 
                 <div class="impact-display" id="impactDisplay">
                     <div class="impact-title" id="impactTitle"></div>
@@ -604,7 +696,7 @@
                     Uw donatie is fiscaal aftrekbaar
                 </div>
                 <div class="trust-badge">
-                    <strong>68+ jaar ervaring</strong><br>
+                    <strong>68 jaar ervaring</strong><br>
                     Duurzame zorg in Afrika
                 </div>
                 <div class="trust-badge">
@@ -614,20 +706,30 @@
             </div>
 
             <section class="form-section">
-                <h3>Ontvang meer informatie over nalatenschappen</h3>
-                <p>Wij sturen u graag onze nalaten-brochure toe met inspirerende persoonlijke verhalen en nuttige informatie over testamentair geven.</p>
+                <div class="form-section-image">
+                    <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/FJ.jpg" alt="Floortje - Persoonlijke contactpersoon Amref" loading="lazy">
+                </div>
+                <div class="form-section-content">
+                    <h3>Geïnspireerd door uw impact? Ik help u graag persoonlijk verder.</h3>
+                    <p>Hallo, ik ben Floortje, uw persoonlijke contactpersoon voor nalaten bij Amref.</p>
+                    <p>U heeft zojuist de Impact Calculator gebruikt om te zien wat er mogelijk is. Fantastisch.</p>
+                    <p>Wilt u een persoonlijk overzicht ontvangen van de projecten die u heeft gekozen? Geen algemene brochure, maar een 'Impact Dossier' dat ik speciaal voor u samenstel.</p>
+                    <p>Vul hieronder uw naam en e-mailadres in, en ik stuur u persoonlijk een e-mail. Dan beginnen we vanaf daar het gesprek. Vrijblijvend, natuurlijk.</p>
 
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="fullName">Volledige naam *</label>
-                        <input type="text" id="fullName" name="fullName" required>
-                    </div>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="fullName">Volledige naam *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="email">E-mailadres *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="email">E-mailadres *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
 
+                        <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
+                    </form>
+                </div>
                     <div class="form-group">
                         <label for="phone">Telefoonnummer (optioneel)</label>
                         <input type="tel" id="phone" name="phone">
@@ -651,7 +753,7 @@
 
                     <div class="checkbox-group">
                         <input type="checkbox" id="privacy" name="privacy" required>
-                        <label for="privacy">Ik ga akkoord met de <a href="#" style="color: var(--amref-red);">privacyverklaring</a> van Amref en geef toestemming voor het verwerken van mijn gegevens. *</label>
+                        <label for="privacy">Ik ga akkoord met de <a href="https://www.amref.nl/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--amref-red);">privacyverklaring</a> van Amref en geef toestemming voor het verwerken van mijn gegevens. *</label>
                     </div>
 
                     <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
@@ -663,7 +765,9 @@
                 <div class="footer-text">
                     <strong>Amref Health Africa</strong>
                     Duurzame gezondheidszorg in Afrika sinds 1957<br>
-                    Een Afrikaanse organisatie met 68+ jaar ervaring
+                    Een Afrikaanse organisatie met 68 jaar ervaring<br><br>
+                    Dit zijn echte projecten en laten zien hoe uw geld ingezet kan worden.<br> 
+                    Uw nalatenschap komt terecht daar waar het het hardst nodig is
                 </div>
             </footer>
         </main>
@@ -678,6 +782,26 @@
         // Track selected amount globally
         let selectedAmount = null;
         let selectedLocation = null;
+        let selectedProject = null;
+
+        // Toast notification function
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toastNotification');
+            const toastMessage = document.getElementById('toastMessage');
+
+            toastMessage.textContent = message;
+            toast.className = 'toast-notification ' + type;
+
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+
+            // Hide toast after 4 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
 
         // Impact data voor elke donatie
         const impactData = {
@@ -693,17 +817,17 @@
             },
             12000: {
                 title: "Verpleegsters in opleiding",
-                description: "In grote delen van Afrika is het tekort aan goed opgeleide zorgverleners nijpend. Waar Nederland 11,7 verlos- en verpleegkundige heeft op 1.000 inwoners, zijn dat er in Zambia slechts 2,1.\n\nHet gevolg is dat talloze mensen overlijden aan ziekten die eenvoudig te voorkomen of te behandelen zijn, en dat veel vrouwen sterven tijdens hun bevalling omdat er niemand in de buurt is die hen kan helpen. Met uw nalatenschap verandert u dit. Voor €12.000 krijgen 20 jonge vrouwen in Zambia de kans om een jaar lang verpleegkunde te studeren.\n\nAmref Health Africa investeert al decennia in de opleiding van lokale zorgverleners. Via onze eigen Amref International University in Nairobi en onze digitale leerplatforms Leap en Jibu kunnen studenten, ook in afgelegen gebieden, op elk moment leren en zich blijven ontwikkelen\n\nUw nalatenschap maakt dit mogelijk: het opleiden van vrouwen die op hun beurt duizenden mensen de zorg bieden die zij verdienen. Zo ontstaat een kettingreactie van kennis, gezondheid en hoop. Want iedere verpleegkundige die u helpt opleiden, betekent honderden mensen die een kans krijgen op een gezond leven. Lokaal, duurzaam en met blijvende impact.",
+                description: "In grote delen van Afrika is het tekort aan goed opgeleide zorgverleners nijpend. Waar Nederland 11,7 verlos- en verpleegkundigen heeft op 1.000 inwoners, zijn dat er in Zambia slechts 2,1.\n\nHet gevolg is dat talloze mensen overlijden aan ziekten die eenvoudig te voorkomen of te behandelen zijn, en dat veel vrouwen sterven tijdens hun bevalling omdat er niemand in de buurt is die hen kan helpen. Met uw nalatenschap verandert u dit. Voor €12.000 krijgen 20 jonge vrouwen in Zambia de kans om een jaar lang verpleegkunde te studeren.\n\nAmref Health Africa investeert al decennia in de opleiding van lokale zorgverleners. Via onze eigen Amref International University in Nairobi en onze digitale leerplatforms Leap en Jibu kunnen studenten, ook in afgelegen gebieden, op elk moment leren en zich blijven ontwikkelen\n\nUw nalatenschap maakt dit mogelijk: het opleiden van vrouwen die op hun beurt duizenden mensen de zorg bieden die zij verdienen. Zo ontstaat een kettingreactie van kennis, gezondheid en hoop. Want iedere verpleegkundige die u helpt opleiden, betekent honderden mensen die een kans krijgen op een gezond leven. Lokaal, duurzaam en met blijvende impact.",
                 counter: { number: 20, text: "verpleegsters opgeleid" }
             },
             21100: {
                 title: "'s Nachts ook veilig bevallen",
-                description: "In veel gezondheidsklinieken in Kenia is elektriciteit nog altijd geen vanzelfsprekendheid. Zonder stroom vallen koelkasten met vaccins uit, stopt medische apparatuur met werken en moeten verloskundigen bij het licht van een zaklamp bevallingen begeleiden. Het gebrek aan betrouwbare energie maakt elke nacht een risico voor moeders en pasgeborenen.\n\nUw nalatenschap verandert dat. Met €21.100 krijgt een kliniek in een afgelegen gebied zonnepanelen, waarmee zij 24 uur per dag kunnen beschikken over veilige, duurzame stroom. Daardoor kunnen zorgverleners ook 's nachts veilig bevallingen begeleiden, blijven levensreddende vaccins en medicijnen gekoeld en zijn noodbehandelingen altijd mogelijk. Tegelijk worden lokale technici opgeleid om de installaties te onderhouden: zo blijft de kennis in de gemeenschap en versterken we de lokale economie\n\nEén afgelegen kliniek helpt gemiddeld 1.200 mensen per maand. Uw bijdrage zorgt ervoor dat moeders veilig kunnen bevallen, baby's gezond ter wereld komen en families weten dat de deur van de kliniek nooit dicht is: zelfs niet als het donker wordt. Een nalatenschap die letterlijk licht brengt, en daarmee leven.",
+                description: "In veel kleine ziekenhuizen in Kenia is elektriciteit nog altijd geen vanzelfsprekendheid. Zonder stroom vallen koelkasten met vaccins uit, stopt medische apparatuur met werken en moeten verloskundigen bij het licht van een zaklamp bevallingen begeleiden. Het gebrek aan betrouwbare energie maakt elke nacht een risico voor moeders en pasgeborenen.\n\nUw nalatenschap verandert dat. Met €21.100 krijgt een ziekenhuis in een afgelegen gebied zonnepanelen, waarmee zij 24 uur per dag kunnen beschikken over veilige, duurzame stroom. Daardoor kunnen zorgverleners ook 's nachts veilig bevallingen begeleiden, blijven levensreddende vaccins en medicijnen gekoeld en zijn noodbehandelingen altijd mogelijk. Tegelijk worden lokale technici opgeleid om de installaties te onderhouden: zo blijft de kennis in de gemeenschap en versterken we de lokale economie\n\nEén ziekenhuis helpt gemiddeld 1.200 mensen per maand. Uw bijdrage zorgt ervoor dat moeders veilig kunnen bevallen, baby's gezond ter wereld komen en families weten dat de deur van de ziekenhuis nooit dicht is: zelfs niet als het donker wordt. Een nalatenschap die letterlijk licht brengt, en daarmee leven.",
                 counter: { number: 1200, text: "mensen per maand geholpen" }
             },
             50400: {
                 title: "Zorg in de meest afgelegen gebieden",
-                description: "In het noorden van Ethiopië, in de regio Amhara, is de gezondheidszorg ingestort na jaren van oorlog en droogte. Ziekenhuizen zijn verwoest, zorgverleners gevlucht en hele dorpen hebben geen toegang meer tot medische hulp. Vooral vrouwen en kinderen worden hierdoor het hardst getroffen: zwangere vrouwen moeten bevallen zonder hulp, en ondervoede kinderen blijven vaak onbehandeld.\n\nMet uw nalatenschap helpt u deze gemeenschappen herstellen. Voor €50.400 maakt u het mogelijk om via medische outreaches 17.000 mensen te bereiken met zorg en voorlichting. Lokale zorgverleners — getraind door Amref via het mobiele leerplatform Leap — trekken te voet of per motor naar dorpen waar geen kliniek meer functioneert. Zij behandelen ondervoede kinderen, begeleiden zwangere vrouwen, vaccineren baby's en geven voorlichting over hygiëne, voeding en gezinsplanning. Waar nodig bieden ze ook medische en psychosociale hulp aan slachtoffers van seksueel geweld.\n\nUw nalatenschap brengt hoop en herstel in een regio die is getekend door conflict. Door zorgverleners te ondersteunen en lokale gemeenschappen te versterken, bouwt u mee aan vrede en toekomstperspectief. Gezondheid betekent hier meer dan genezing: het is de eerste stap naar stabiliteit, vertrouwen en een nieuw begin.",
+                description: "In het noorden van Ethiopië, in de regio Amhara, is de gezondheidszorg ingestort na jaren van oorlog en droogte. Ziekenhuizen zijn verwoest, zorgverleners gevlucht en hele dorpen hebben geen toegang meer tot medische hulp. Vooral vrouwen en kinderen worden hierdoor het hardst getroffen: zwangere vrouwen moeten bevallen zonder hulp, en ondervoede kinderen blijven vaak onbehandeld.\n\nMet uw nalatenschap helpt u deze gemeenschappen herstellen. Voor €50.400 maakt u het mogelijk om via medische outreaches 17.000 mensen te bereiken met zorg en voorlichting. Lokale zorgverleners — getraind door Amref via het mobiele leerplatform Leap — trekken te voet of per motor naar dorpen waar geen ziekenhuis meer functioneert. Zij behandelen ondervoede kinderen, begeleiden zwangere vrouwen, vaccineren baby's en geven voorlichting over hygiëne, voeding en gezinsplanning. Waar nodig bieden ze ook medische en psychosociale hulp aan slachtoffers van seksueel geweld.\n\nUw nalatenschap brengt hoop en herstel in een regio die is getekend door conflict. Door zorgverleners te ondersteunen en lokale gemeenschappen te versterken, bouwt u mee aan vrede en toekomstperspectief. Gezondheid betekent hier meer dan genezing: het is de eerste stap naar stabiliteit, vertrouwen en een nieuw begin.",
                 counter: { number: 17000, text: "mensen bereikt met zorg" }
             },
             146000: {
@@ -723,25 +847,37 @@
         const counterText = document.getElementById('counterText');
         const contactForm = document.getElementById('contactForm');
 
-        // Event listeners voor bedrag selectie
-        amountCards.forEach(card => {
-            card.addEventListener('click', function() {
-                // Remove active class from all cards
-                amountCards.forEach(c => c.classList.remove('selected'));
+       // Event listeners voor bedrag selectie
+    amountCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove active class from all cards
+            amountCards.forEach(c => c.classList.remove('selected'));
 
-                // Add active class to clicked card
-                this.classList.add('selected');
+            // Add active class to clicked card
+            this.classList.add('selected');
 
-                // Get selected amount and location
-                const amount = parseInt(this.dataset.amount);
-                const location = this.dataset.location;
+           // Get selected amount and location
+            const amount = parseInt(this.dataset.amount);
+            const location = this.dataset.location;
+            const project = this.dataset.project;
 
-                // Store globally for form submission
-                selectedAmount = amount;
-                selectedLocation = location;
+            // Store globally for form submission
+            selectedAmount = amount;
+            selectedLocation = location;
+            selectedProject = project;
 
-                // Show impact
-                showImpact(amount);
+            // Push to dataLayer for GTM
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'donation_option_click',
+                'donation_amount': amount,
+                'donation_location': location,
+                'donation_project': project,
+                'donation_amount_formatted': '€' + amount.toLocaleString()
+            });
+
+        // Show impact
+        showImpact(amount);
 
                 // Google Analytics tracking
                 if (typeof gtag !== 'undefined') {
@@ -803,6 +939,8 @@
 
             // Basic validation
             if (!data.fullName || !data.email || !data.privacy) {
+                showToast('Vul alle verplichte velden in.', 'error');
+            if (!data.fullName || !data.email) {
                 alert('Vul alle verplichte velden in.');
                 return;
             }
@@ -810,7 +948,7 @@
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(data.email)) {
-                alert('Voer een geldig e-mailadres in.');
+                showToast('Voer een geldig e-mailadres in.', 'error');
                 return;
             }
 
@@ -827,10 +965,6 @@
                         {
                             full_name: data.fullName,
                             email: data.email,
-                            phone: data.phone || null,
-                            age_category: data.ageCategory || null,
-                            newsletter: data.newsletter === 'on',
-                            privacy_accepted: data.privacy === 'on',
                             selected_amount: selectedAmount,
                             selected_location: selectedLocation
                         }
@@ -850,7 +984,7 @@
                 }
 
                 // Show success message
-                alert('Bedankt voor uw interesse! U ontvangt binnen 2 werkdagen onze informatiebrochure.');
+                showToast('Bedankt voor uw interesse! U ontvangt binnen zo snel mogelijk onze informatiebrochure.', 'success');
 
                 // Reset form
                 this.reset();
@@ -868,7 +1002,7 @@
 
             } catch (error) {
                 console.error('Error submitting form:', error);
-                alert('Er is iets misgegaan bij het versturen. Probeer het later opnieuw.');
+                showToast('Er is iets misgegaan bij het versturen. Probeer het later opnieuw.', 'error');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Ja, ik wil meer informatie';
             }
