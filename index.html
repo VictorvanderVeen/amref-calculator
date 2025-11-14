@@ -678,6 +678,7 @@
                             <div class="location">Meisjes blijven op school</div>
                         </div>
                    </button>
+                </div>
 
                 <div class="impact-display" id="impactDisplay">
                     <div class="impact-title" id="impactTitle"></div>
@@ -730,34 +731,6 @@
                         <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
                     </form>
                 </div>
-                    <div class="form-group">
-                        <label for="phone">Telefoonnummer (optioneel)</label>
-                        <input type="tel" id="phone" name="phone">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="ageCategory">Leeftijdscategorie</label>
-                        <select id="ageCategory" name="ageCategory">
-                            <option value="">Selecteer uw leeftijd</option>
-                            <option value="45-54">45-54 jaar</option>
-                            <option value="55-64">55-64 jaar</option>
-                            <option value="65-74">65-74 jaar</option>
-                            <option value="75+">75+ jaar</option>
-                        </select>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="newsletter" name="newsletter">
-                        <label for="newsletter">Ja, ik wil graag de nieuwsbrief van Amref ontvangen met updates over onze projecten en impact.</label>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="privacy" name="privacy" required>
-                        <label for="privacy">Ik ga akkoord met de <a href="https://www.amref.nl/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--amref-red);">privacyverklaring</a> van Amref en geef toestemming voor het verwerken van mijn gegevens. *</label>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Ja, ik wil meer informatie</button>
-                </form>
             </section>
 
             <footer class="footer">
@@ -938,10 +911,8 @@
             const data = Object.fromEntries(formData);
 
             // Basic validation
-            if (!data.fullName || !data.email || !data.privacy) {
-                showToast('Vul alle verplichte velden in.', 'error');
             if (!data.fullName || !data.email) {
-                alert('Vul alle verplichte velden in.');
+                showToast('Vul alle verplichte velden in.', 'error');
                 return;
             }
 
