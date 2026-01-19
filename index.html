@@ -888,9 +888,11 @@
         const counterText = document.getElementById('counterText');
         const contactForm = document.getElementById('contactForm');
 
-       // Event listeners voor bedrag selectie
-    amountCards.forEach(card => {
-        card.addEventListener('click', function() {
+        // Event listeners voor bedrag selectie
+        console.log('Setting up click handlers for', amountCards.length, 'cards');
+        amountCards.forEach(card => {
+            card.addEventListener('click', function() {
+                console.log('Card clicked:', this.dataset.amount);
             // Remove active class from all cards
             amountCards.forEach(c => c.classList.remove('selected'));
 
@@ -932,7 +934,9 @@
         });
 
         function showImpact(amount) {
+            console.log('showImpact called with amount:', amount);
             const impact = impactData[amount];
+            console.log('Impact data found:', impact ? 'yes' : 'no');
 
             if (impact) {
                 // Update content
