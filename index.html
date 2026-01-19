@@ -809,10 +809,10 @@
         // Initialize Supabase client with error handling
         const SUPABASE_URL = 'https://pmdubdmaghyvibnopgcb.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZHViZG1hZ2h5dmlibm9wZ2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NTI0NjQsImV4cCI6MjA3NjEyODQ2NH0.TTcN29b6zP2xxB0oFot6iCEIBHM0tbzMtQbBWDiQ3ws';
-        let supabase = null;
+        let supabaseClient = null;
         try {
             if (window.supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             } else {
                 console.warn('Supabase library not loaded');
             }
@@ -889,10 +889,8 @@
         const contactForm = document.getElementById('contactForm');
 
         // Event listeners voor bedrag selectie
-        console.log('Setting up click handlers for', amountCards.length, 'cards');
         amountCards.forEach(card => {
             card.addEventListener('click', function() {
-                console.log('Card clicked:', this.dataset.amount);
             // Remove active class from all cards
             amountCards.forEach(c => c.classList.remove('selected'));
 
@@ -934,9 +932,7 @@
         });
 
         function showImpact(amount) {
-            console.log('showImpact called with amount:', amount);
             const impact = impactData[amount];
-            console.log('Impact data found:', impact ? 'yes' : 'no');
 
             if (impact) {
                 // Update content
@@ -1002,12 +998,12 @@
 
             try {
                 // Check if Supabase is available
-                if (!supabase) {
+                if (!supabaseClient) {
                     throw new Error('Database connection not available');
                 }
 
                 // Insert data into Supabase
-                const { data: insertData, error } = await supabase
+                const { data: insertData, error } = await supabaseClient
                     .from('nalatenschap_leads')
                     .insert([
                         {
