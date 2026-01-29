@@ -121,6 +121,64 @@ function getApprovedMessages() {
 }
 
 /**
+ * Client-side functie om berichten op te halen (voor google.script.run)
+ */
+function getMessagesForClient() {
+  const sheet = getOrCreateSheet();
+  const data = sheet.getDataRange().getValues();
+
+  const messages = [];
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (row[4] === STATUS_APPROVED) {
+      messages.push({
+        timestamp: row[0],
+        naam: row[1] || 'Anoniem',
+        boodschap: row[3],
+        datum: formatDate(row[0])
+      });
+    }
+  }
+
+  messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  return {
+    success: true,
+    messages: messages
+  };
+}
+
+/**
+ * Client-side functie om een bericht toe te voegen (voor google.script.run)
+ */
+function addMessageFromClient(naam, email, boodschap) {
+  try {
+    if (!boodschap || boodschap.trim() === '') {
+      return { success: false, error: 'Boodschap is verplicht' };
+    }
+
+    if (boodschap.length > 500) {
+      return { success: false, error: 'Boodschap mag maximaal 500 karakters bevatten' };
+    }
+
+    const sheet = getOrCreateSheet();
+    const timestamp = new Date();
+
+    sheet.appendRow([
+      timestamp,
+      (naam || 'Anoniem').trim(),
+      (email || '').trim(),
+      boodschap.trim(),
+      STATUS_PENDING
+    ]);
+
+    return { success: true, message: 'Bericht succesvol verstuurd' };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+/**
  * Haalt de sheet op of maakt deze aan als deze niet bestaat
  */
 function getOrCreateSheet() {

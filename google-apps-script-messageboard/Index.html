@@ -469,37 +469,29 @@
   </div>
 
   <script>
-    // Script URL (wordt automatisch ingevuld door Apps Script)
-    const SCRIPT_URL = getScriptUrl();
-
-    function getScriptUrl() {
-      // In Apps Script wordt dit de URL van het gepubliceerde script
-      return window.location.href.split('?')[0];
-    }
-
-    // Berichten ophalen
-    async function loadMessages() {
+    // Berichten ophalen via google.script.run
+    function loadMessages() {
       const container = document.getElementById('messages-container');
 
-      try {
-        const response = await fetch(SCRIPT_URL + '?action=getMessages');
-        const data = await response.json();
-
-        if (data.success && data.messages && data.messages.length > 0) {
-          renderMessages(data.messages);
-        } else {
-          renderEmptyState();
-        }
-      } catch (error) {
-        console.error('Fout bij laden berichten:', error);
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">😕</div>
-            <h3>Er ging iets mis</h3>
-            <p>We konden de berichten niet laden. Probeer de pagina te vernieuwen.</p>
-          </div>
-        `;
-      }
+      google.script.run
+        .withSuccessHandler(function(data) {
+          if (data.success && data.messages && data.messages.length > 0) {
+            renderMessages(data.messages);
+          } else {
+            renderEmptyState();
+          }
+        })
+        .withFailureHandler(function(error) {
+          console.error('Fout bij laden berichten:', error);
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">😕</div>
+              <h3>Er ging iets mis</h3>
+              <p>We konden de berichten niet laden. Probeer de pagina te vernieuwen.</p>
+            </div>
+          `;
+        })
+        .getMessagesForClient();
     }
 
     function renderMessages(messages) {
@@ -614,10 +606,9 @@
       }
     }
 
-    async function submitMessage(event) {
+    function submitMessage(event) {
       event.preventDefault();
 
-      const form = document.getElementById('message-form');
       const submitBtn = document.getElementById('submit-btn');
       const errorDiv = document.getElementById('form-error');
 
@@ -641,34 +632,23 @@
       submitBtn.textContent = 'Versturen...';
       errorDiv.style.display = 'none';
 
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            naam: naam || 'Anoniem',
-            email: email,
-            boodschap: boodschap
-          })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          showSuccess();
-        } else {
-          showError(data.error || 'Er ging iets mis. Probeer het opnieuw.');
+      google.script.run
+        .withSuccessHandler(function(data) {
+          if (data.success) {
+            showSuccess();
+          } else {
+            showError(data.error || 'Er ging iets mis. Probeer het opnieuw.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Verstuur boodschap';
+          }
+        })
+        .withFailureHandler(function(error) {
+          console.error('Fout bij versturen:', error);
+          showError('Er ging iets mis met de verbinding. Probeer het opnieuw.');
           submitBtn.disabled = false;
           submitBtn.textContent = 'Verstuur boodschap';
-        }
-      } catch (error) {
-        console.error('Fout bij versturen:', error);
-        showError('Er ging iets mis met de verbinding. Probeer het opnieuw.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Verstuur boodschap';
-      }
+        })
+        .addMessageFromClient(naam || 'Anoniem', email, boodschap);
     }
 
     function showError(message) {
