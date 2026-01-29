@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steun een vluchtelingstudent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--white);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header p {
+      font-size: 1.125rem;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* CTA Button */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--white);
+      color: var(--primary);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    /* Message Grid - Masonry style */
+    .messages-grid {
+      column-count: 1;
+      column-gap: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .messages-grid {
+        column-count: 2;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .messages-grid {
+        column-count: 3;
+      }
+    }
+
+    /* Message Card */
+    .message-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      break-inside: avoid;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .message-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .message-content {
+      font-size: 1rem;
+      color: var(--gray-700);
+      margin-bottom: 1rem;
+      word-wrap: break-word;
+    }
+
+    .message-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .message-author {
+      font-weight: 600;
+      color: var(--gray-800);
+      font-size: 0.875rem;
+    }
+
+    .message-date {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+    }
+
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: var(--white);
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      color: var(--gray-500);
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Modal */
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--gray-400);
+      cursor: pointer;
+      padding: 0.25rem;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--gray-600);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-label .optional {
+      font-weight: 400;
+      color: var(--gray-400);
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .char-counter {
+      text-align: right;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      margin-top: 0.25rem;
+    }
+
+    .char-counter.warning {
+      color: var(--warning);
+    }
+
+    .char-counter.error {
+      color: var(--error);
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Success Message */
+    .success-message {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--success-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2rem;
+    }
+
+    .success-message h3 {
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .success-message p {
+      color: var(--gray-500);
+      font-size: 0.9375rem;
+    }
+
+    /* Error Message */
+    .error-message {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--error);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .header h1 {
+        font-size: 1.75rem;
+      }
+
+      .header p {
+        font-size: 1rem;
+      }
+
+      .container {
+        padding: 1.5rem 1rem;
+      }
+    }
+
+    /* Animation for cards */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message-card {
+      animation: fadeInUp 0.4s ease forwards;
+    }
+
+    .message-card:nth-child(1) { animation-delay: 0.1s; }
+    .message-card:nth-child(2) { animation-delay: 0.15s; }
+    .message-card:nth-child(3) { animation-delay: 0.2s; }
+    .message-card:nth-child(4) { animation-delay: 0.25s; }
+    .message-card:nth-child(5) { animation-delay: 0.3s; }
+    .message-card:nth-child(6) { animation-delay: 0.35s; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>Steun een vluchtelingstudent</h1>
+      <p>Laat een bemoedigende boodschap achter voor vluchtelingstudenten die in Nederland studeren. Jouw woorden kunnen het verschil maken!</p>
+      <button class="btn-primary" onclick="openModal()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Laat een boodschap achter
+      </button>
+    </header>
+
+    <!-- Messages Container -->
+    <main id="messages-container">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <p>Berichten laden...</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Laat een boodschap achter</h2>
+        <button class="modal-close" onclick="closeModal()" aria-label="Sluiten">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Form wordt hier dynamisch getoond -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script URL (wordt automatisch ingevuld door Apps Script)
+    const SCRIPT_URL = getScriptUrl();
+
+    function getScriptUrl() {
+      // In Apps Script wordt dit de URL van het gepubliceerde script
+      return window.location.href.split('?')[0];
+    }
+
+    // Berichten ophalen
+    async function loadMessages() {
+      const container = document.getElementById('messages-container');
+
+      try {
+        const response = await fetch(SCRIPT_URL + '?action=getMessages');
+        const data = await response.json();
+
+        if (data.success && data.messages && data.messages.length > 0) {
+          renderMessages(data.messages);
+        } else {
+          renderEmptyState();
+        }
+      } catch (error) {
+        console.error('Fout bij laden berichten:', error);
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">😕</div>
+            <h3>Er ging iets mis</h3>
+            <p>We konden de berichten niet laden. Probeer de pagina te vernieuwen.</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderMessages(messages) {
+      const container = document.getElementById('messages-container');
+
+      const html = `
+        <div class="messages-grid">
+          ${messages.map(msg => `
+            <div class="message-card">
+              <div class="message-content">${escapeHtml(msg.boodschap)}</div>
+              <div class="message-footer">
+                <span class="message-author">${escapeHtml(msg.naam)}</span>
+                <span class="message-date">${msg.datum}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function renderEmptyState() {
+      const container = document.getElementById('messages-container');
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">💬</div>
+          <h3>Nog geen berichten</h3>
+          <p>Wees de eerste die een bemoedigende boodschap achterlaat!</p>
+        </div>
+      `;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Modal functies
+    function openModal() {
+      document.getElementById('modal-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      renderForm();
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function closeModalOnOverlay(event) {
+      if (event.target === document.getElementById('modal-overlay')) {
+        closeModal();
+      }
+    }
+
+    function renderForm() {
+      const modalBody = document.getElementById('modal-body');
+      modalBody.innerHTML = `
+        <form id="message-form" onsubmit="submitMessage(event)">
+          <div id="form-error" class="error-message" style="display: none;"></div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Naam <span class="optional">(optioneel)</span>
+            </label>
+            <input type="text" class="form-input" id="naam" name="naam" placeholder="Je naam of 'Anoniem'">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Email <span class="optional">(optioneel, wordt niet getoond)</span>
+            </label>
+            <input type="email" class="form-input" id="email" name="email" placeholder="je@email.nl">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Jouw boodschap *</label>
+            <textarea
+              class="form-textarea"
+              id="boodschap"
+              name="boodschap"
+              placeholder="Schrijf hier je bemoedigende boodschap..."
+              maxlength="500"
+              oninput="updateCharCounter()"
+              required
+            ></textarea>
+            <div class="char-counter" id="char-counter">0 / 500</div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submit-btn">
+            Verstuur boodschap
+          </button>
+        </form>
+      `;
+    }
+
+    function updateCharCounter() {
+      const textarea = document.getElementById('boodschap');
+      const counter = document.getElementById('char-counter');
+      const length = textarea.value.length;
+
+      counter.textContent = `${length} / 500`;
+
+      counter.classList.remove('warning', 'error');
+      if (length > 450) {
+        counter.classList.add('warning');
+      }
+      if (length >= 500) {
+        counter.classList.add('error');
+      }
+    }
+
+    async function submitMessage(event) {
+      event.preventDefault();
+
+      const form = document.getElementById('message-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const errorDiv = document.getElementById('form-error');
+
+      const naam = document.getElementById('naam').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const boodschap = document.getElementById('boodschap').value.trim();
+
+      // Validatie
+      if (!boodschap) {
+        showError('Vul alsjeblieft een boodschap in.');
+        return;
+      }
+
+      if (boodschap.length > 500) {
+        showError('Je boodschap mag maximaal 500 karakters bevatten.');
+        return;
+      }
+
+      // Verstuur
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Versturen...';
+      errorDiv.style.display = 'none';
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            naam: naam || 'Anoniem',
+            email: email,
+            boodschap: boodschap
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showSuccess();
+        } else {
+          showError(data.error || 'Er ging iets mis. Probeer het opnieuw.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Verstuur boodschap';
+        }
+      } catch (error) {
+        console.error('Fout bij versturen:', error);
+        showError('Er ging iets mis met de verbinding. Probeer het opnieuw.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Verstuur boodschap';
+      }
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('form-error');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function showSuccess() {
+      const modalBody = document.getElementById('modal-body');
+      modalBody.innerHTML = `
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h3>Bedankt voor je boodschap!</h3>
+          <p>Je boodschap wordt binnen 24 uur beoordeeld en daarna gepubliceerd op het board.</p>
+          <button class="btn-submit" onclick="closeModal(); loadMessages();" style="margin-top: 1.5rem;">
+            Sluiten
+          </button>
+        </div>
+      `;
+    }
+
+    // Keyboard events
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    // Laad berichten bij start
+    document.addEventListener('DOMContentLoaded', loadMessages);
+  </script>
+</body>
+</html>
