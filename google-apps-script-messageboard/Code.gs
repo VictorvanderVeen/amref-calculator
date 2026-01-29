@@ -17,7 +17,8 @@ const STATUS_REJECTED = 'rejected';
  * - Met action=getMessages: retourneert goedgekeurde berichten als JSON
  */
 function doGet(e) {
-  const action = e.parameter.action;
+  // Check of er een action parameter is (met null check voor e)
+  const action = e && e.parameter ? e.parameter.action : null;
 
   if (action === 'getMessages') {
     return getApprovedMessages();
