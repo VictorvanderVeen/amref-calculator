@@ -321,16 +321,16 @@
         }
 
         .form-section {
-            background: #FAFAFA;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px var(--amref-shadow);
-            padding: 50px;
-            margin-top: 2rem;
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
+        background: #FAFAFA;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px var(--amref-shadow);
+        padding: 50px;
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+     }
 
         .form-section-image {
             flex-shrink: 0;
@@ -376,14 +376,16 @@
             color: var(--amref-text-black);
         }
 
-        .form-section p:last-of-type {
-            margin-bottom: 2rem;
-        }
+    .form-section h3,
+.form-section p {
+    text-align: center;
+}
 
-        .form-group {
-            margin-bottom: 1.5rem;
-            max-width: 400px;
-        }
+.form-group {
+    margin-bottom: 1.5rem;
+    max-width: 400px;
+    width: 100%;
+}
 
         .form-group label {
             display: block;
@@ -777,9 +779,7 @@
             </div>
 
             <section class="form-section">
-                <div class="form-section-image">
-                    <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/FJ.jpg" alt="Floortje - Persoonlijke contactpersoon Amref" loading="lazy">
-                </div>
+               
                 <div class="form-section-content">
                     <h3>Ontvang uw Amref Impact Dossier.</h3>
                    <p>Alle impact verhalen overzichtelijk op één plek, zodat u in rust kunt kiezen welke impact bij uw nalatenschap past.</p>
@@ -795,7 +795,7 @@
                             <input type="email" id="email" name="email" placeholder="naam@voorbeeld.nl" required>
                         </div>
 
-                        <button type="submit" class="submit-btn">Ja, Floortje, ik ontvang graag het dossier</button>
+                        <button type="submit" class="submit-btn">Ja, ik ontvang graag het dossier</button>
                     </form>
                 </div>
             </section>
