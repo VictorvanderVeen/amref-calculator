@@ -57,6 +57,7 @@
             background: var(--amref-white);
             min-height: 100vh;
             position: relative;
+            padding-bottom: 80px;
         }
 
         .header {
@@ -106,6 +107,13 @@
             font-weight: 600;
             padding: 0.5rem 1.25rem;
             border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-pill:hover {
+            background: var(--amref-red);
+            color: var(--amref-white);
         }
 
         .main-content {
@@ -123,13 +131,6 @@
         .section-title {
             font-size: 1.4rem;
             color: var(--amref-red);
-            margin-bottom: 0.5rem;
-        }
-
-        .section-intro {
-            font-size: 0.95rem;
-            color: var(--amref-text-dark);
-            line-height: 1.5;
             margin-bottom: 1.5rem;
         }
 
@@ -138,6 +139,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
             margin-bottom: 2rem;
+            align-items: stretch;
         }
 
         .amount-card.featured {
@@ -152,7 +154,7 @@
         .featured-badge {
             position: absolute;
             top: 12px;
-            left: 12px;
+            right: 12px;
             background: var(--amref-red);
             color: var(--amref-white);
             font-size: 0.8rem;
@@ -171,7 +173,8 @@
             transition: all 0.3s ease;
             background: var(--amref-white);
             overflow: hidden;
-            display: block;
+            display: flex;
+            flex-direction: column;
             width: 100%;
             font-family: inherit;
         }
@@ -189,23 +192,28 @@
         }
 
         .amount-card:focus {
-        outline: 3px solid var(--amref-red);
-        outline-offset: 2px;
+            outline: 3px solid var(--amref-red);
+            outline-offset: 2px;
         }
 
         .amount-card:active {
-        transform: translateY(-6px);
+            transform: translateY(-6px);
         }
 
         .amount-card-image {
             width: 100%;
             height: 180px;
             object-fit: cover;
+            object-position: center 30%;
             display: block;
         }
 
         .amount-card-content {
             padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .amount-card .amount {
@@ -258,6 +266,28 @@
             margin-bottom: 1.2rem;
         }
 
+        .impact-cta {
+            display: inline-block;
+            margin-top: 1.5rem;
+            background: var(--amref-green);
+            color: var(--amref-white);
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .impact-cta:hover {
+            background: var(--amref-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(124, 179, 66, 0.3);
+        }
+
         .impact-counter {
             display: flex;
             justify-content: center;
@@ -298,34 +328,17 @@
             color: var(--amref-text-dark);
         }
 
+        /* Form section */
         .form-section {
-        background: #FAFAFA;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px var(--amref-shadow);
-        padding: 50px;
-        margin-top: 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-     }
-
-        .form-section-image {
-            flex-shrink: 0;
-            width: 180px;
-        }
-
-        .form-section-image img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease;
-        }
-
-        .form-section-image img:hover {
-            transform: scale(1.02);
+            background: var(--amref-red);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(227, 6, 19, 0.3);
+            padding: 50px;
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .form-section-content {
@@ -333,46 +346,41 @@
         }
 
         .form-section h3 {
-            color: var(--amref-text-black);
+            color: var(--amref-white);
             font-size: 1.75rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            text-align: left;
+            text-align: center;
             line-height: 1.3;
         }
 
         .form-section p {
-            text-align: left;
+            text-align: center;
             margin-bottom: 1rem;
-            color: var(--amref-text-dark);
+            color: rgba(255, 255, 255, 0.9);
             line-height: 1.6;
         }
 
         .form-section p:first-of-type {
             font-size: 1.125rem;
             font-weight: 500;
-            color: var(--amref-text-black);
+            color: var(--amref-white);
         }
 
-    .form-section h3,
-.form-section p {
-    text-align: center;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-    max-width: 400px;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-}
+        .form-group {
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 400;
+            font-weight: 600;
             font-size: 0.875rem;
-            color: #666;
+            color: var(--amref-white);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -402,23 +410,6 @@
             outline: none;
             border-color: var(--amref-green);
             box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.1);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.8rem;
-            margin: 1.5rem 0;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: auto;
-            margin-top: 0.2rem;
-        }
-
-        .checkbox-group label {
-            font-size: 0.9rem;
-            line-height: 1.5;
         }
 
         .submit-btn {
@@ -454,6 +445,202 @@
             box-shadow: none;
         }
 
+        /* Waarom nalaten section */
+        .waarom-section {
+            background: var(--amref-white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px var(--amref-shadow);
+            padding: 2.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .waarom-section h3 {
+            color: var(--amref-text-black);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .waarom-section .subtitle {
+            color: var(--amref-text-dark);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .waarom-section ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .waarom-section ul li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 1rem;
+            color: var(--amref-text-dark);
+        }
+
+        .waarom-section ul li::before {
+            content: "\2713";
+            color: var(--amref-green);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .waarom-section .closing {
+            font-weight: 500;
+            color: var(--amref-text-black);
+            font-size: 1rem;
+        }
+
+        /* Blijvend verschil section */
+        .blijvend-section {
+            background: var(--amref-light-red);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .blijvend-section h3 {
+            color: var(--amref-text-black);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .blijvend-section p {
+            color: var(--amref-text-dark);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .blijvend-cta {
+            display: inline-block;
+            background: var(--amref-red);
+            color: var(--amref-white);
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .blijvend-cta:hover {
+            background: #c10510;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(227, 6, 19, 0.3);
+        }
+
+        /* FAQ section */
+        .faq-section {
+            margin-top: 2rem;
+            padding: 2.5rem;
+            background: var(--amref-white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px var(--amref-shadow);
+        }
+
+        .faq-section h3 {
+            color: var(--amref-text-black);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-item summary {
+            padding: 1rem 0;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--amref-text-black);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item summary::after {
+            content: "+";
+            font-size: 1.4rem;
+            color: var(--amref-red);
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .faq-item[open] summary::after {
+            content: "\2212";
+        }
+
+        .faq-item p {
+            padding: 0 0 1rem;
+            color: var(--amref-text-dark);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Sticky CTA */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--amref-red);
+            color: var(--amref-white);
+            padding: 12px 20px;
+            text-align: center;
+            z-index: 9999;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .sticky-cta:hover {
+            background: #c10510;
+        }
+
+        .sticky-cta-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .sticky-cta-text .arrow {
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
         .footer {
             background: var(--amref-light-gray);
             padding: 3rem 1.5rem 2rem;
@@ -480,6 +667,7 @@
             color: var(--amref-text-black);
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .calculator-container {
                 margin: 0;
@@ -539,15 +727,6 @@
                 text-align: center;
             }
 
-            .form-section-image {
-                width: 150px;
-                margin: 0 auto;
-            }
-
-            .form-section-image img {
-                height: 150px;
-            }
-
             .form-group {
                 max-width: 100%;
             }
@@ -592,6 +771,20 @@
             .trust-indicators {
                 flex-direction: column;
                 gap: 1rem;
+            }
+
+            .waarom-section,
+            .blijvend-section,
+            .faq-section {
+                padding: 1.5rem;
+            }
+
+            .sticky-cta {
+                padding: 10px 15px;
+            }
+
+            .sticky-cta-text {
+                font-size: 0.85rem;
             }
         }
 
@@ -691,61 +884,67 @@
     <div class="calculator-container">
         <header class="header">
             <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/amref-logo.png" alt="Amref Health Africa" class="header-logo">
-            <h1>Ontdek hoe uw nalatenschap betere zorg in Afrika mogelijk maakt</h1>
+            <h1>Ontdek hoe uw nalatenschap levens kan verbeteren in Afrika</h1>
         </header>
 
         <div class="instruction-block">
-            <p class="instruction-text">Met een gift in uw testament geeft u ook later een gezonder leven. Ontvang vrijblijvend meer informatie over wat nalaten aan Amref Health Africa betekent.</p>
-            <span class="instruction-pill">&#128071; Kies een thema hieronder</span>
+            <p class="instruction-text">Ontvang vrijblijvend meer informatie over wat nalaten aan Amref Health Africa betekent.</p>
+            <span class="instruction-pill" id="scrollToPill">Ontvang meer informatie</span>
         </div>
 
         <main class="main-content">
             <section class="calculator-section">
-                <h2 class="section-title">Zo kan uw nalatenschap levens verbeteren</h2>
-                <p class="section-intro">Met een nalatenschap aan Amref Health Africa draagt u blijvend bij aan betere gezondheidszorg in Afrika. Hieronder leest u projecten waarbij uw hulp het verschil maakt. Genoemde bedragen zijn voorbeelden, u mag zelf bepalen hoeveel u wilt nalaten.</p>
+                <h2 class="section-title">Zo kan uw nalatenschap levens verbeteren:</h2>
                 <div class="amount-selector">
-                <button type="button" class="amount-card featured" data-amount="1000" data-location="Zuid-Soedan" data-project="Vaccineer de kleintjes" aria-label="Selecteer Vaccineer de kleintjes in Zuid-Soedan">
+                    <button type="button" class="amount-card featured" data-amount="1000" data-location="Zuid-Soedan" data-project="Vaccineer de kleintjes" aria-label="Selecteer Vaccineer de kleintjes in Zuid-Soedan">
                         <span class="featured-badge">&#11088; Meest bekeken</span>
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-1000.jpg" alt="Kinderen vaccineren in Zuid-Soedan" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="location">Vaccineer de kleintjes</div>
                         </div>
-                   </button>
-                   <button type="button" class="amount-card" data-amount="5025" data-location="Tanzania" data-project="Een eigen WC" aria-label="Selecteer €5.025 voor Een eigen WC in Tanzania">
+                    </button>
+                    <button type="button" class="amount-card" data-amount="5000" data-location="Tanzania" data-project="Een eigen WC" aria-label="Selecteer Een eigen WC in Tanzania">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-5025.jpg" alt="Veilige toiletten in Tanzania" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="location">Een eigen WC</div>
                         </div>
-                   </button>
-                    <button type="button" class="amount-card" data-amount="12000" data-location="Zambia" data-project="Verpleegsters in opleiding" aria-label="Selecteer €12.000 voor Verpleegsters in opleiding in Zambia">
-                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-12000.jpg" alt="Verpleegsters opleiden in Zambia" class="amount-card-image" loading="lazy">
+                    </button>
+                    <button type="button" class="amount-card" data-amount="12000" data-location="Zambia" data-project="Verpleegkundigen opleiden" aria-label="Selecteer Verpleegkundigen opleiden in Zambia">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-12000.jpg" alt="Verpleegkundigen opleiden in Zambia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
-                            <div class="location">Verpleegsters in opleiding</div>
+                            <div class="location">Verpleegkundigen opleiden</div>
                         </div>
-                   </button>
-                    <button type="button" class="amount-card" data-amount="21100" data-location="Kenia" data-project="Altijd hulp door zonnepanelen" aria-label="Selecteer €21.100 voor Altijd hulp door zonnepanelen in Kenia">
-                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-21100.jpeg" alt="Zonnepanelen voor ziekenhuis in Kenia" class="amount-card-image" loading="lazy">
+                    </button>
+                    <button type="button" class="amount-card" data-amount="21100" data-location="Kenia" data-project="Altijd hulp door zonnepanelen" aria-label="Selecteer Altijd hulp door zonnepanelen in Kenia">
+                        <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-21100.jpeg" alt="Zonnepanelen voor kliniek in Kenia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="location">Altijd hulp door zonnepanelen</div>
                         </div>
                     </button>
-                    <button type="button" class="amount-card" data-amount="50400" data-location="Ethiopië" data-project="Outreach" aria-label="Selecteer €50.400 voor Outreach in Ethiopië">
+                    <button type="button" class="amount-card" data-amount="50400" data-location="Ethiopië" data-project="Zorg in afgelegen gebieden" aria-label="Selecteer Zorg in afgelegen gebieden in Ethiopië">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-50400.jpg" alt="Zorg in afgelegen gebieden van Ethiopië" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
-                            <div class="location">Outreach</div>
+                            <div class="location">Zorg in afgelegen gebieden</div>
                         </div>
-                   </button>
-                   <button type="button" class="amount-card" data-amount="146000" data-location="Kenia" data-project="Meisjes blijven op school" aria-label="Selecteer €146.000 voor Meisjes blijven op school in Kenia">
+                    </button>
+                    <button type="button" class="amount-card" data-amount="146000" data-location="Kenia" data-project="Meisjes blijven op school" aria-label="Selecteer Meisjes blijven op school in Kenia">
                         <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/project-146000.jpeg" alt="Watersysteem voor scholen in Kenia" class="amount-card-image" loading="lazy">
                         <div class="amount-card-content">
                             <div class="location">Meisjes blijven op school</div>
                         </div>
-                   </button>
+                    </button>
+                    <button type="button" class="amount-card" data-amount="0" data-location="Afrika" data-project="Stop meisjesbesnijdenis" aria-label="Selecteer Stop meisjesbesnijdenis">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='180' fill='%23e0e0e0'%3E%3Crect width='400' height='180'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23999'%3EFoto volgt%3C/text%3E%3C/svg%3E" alt="Stop meisjesbesnijdenis" class="amount-card-image">
+                        <div class="amount-card-content">
+                            <div class="location">Stop meisjesbesnijdenis!</div>
+                        </div>
+                    </button>
                 </div>
 
                 <div class="impact-display" id="impactDisplay">
                     <div class="impact-title" id="impactTitle"></div>
                     <div class="impact-description" id="impactDescription"></div>
+                    <button class="impact-cta" id="impactCta" type="button">Ontvang meer informatie</button>
                 </div>
 
                 <div class="impact-counter" id="impactCounter" style="display: none;">
@@ -769,11 +968,10 @@
                 </div>
             </div>
 
-            <section class="form-section">
-               
+            <section class="form-section" id="formSection">
                 <div class="form-section-content">
                     <h3>Ontvang vrijblijvend meer informatie over nalaten aan Amref Health Africa</h3>
-                   <p>Uw nalatenschap maakt echt het verschil voor meisjes, vrouwen en hele gemeenschappen in Afrika. Vul uw gegevens in en ontvang meer informatie over onze projecten en bekijk in alle rust welke impact uw nalatenschap kan maken.</p>
+                    <p>Uw nalatenschap maakt echt het verschil voor meisjes, vrouwen en hele gemeenschappen in Afrika. Vul uw gegevens in en ontvang meer informatie over onze projecten en bekijk in alle rust welke impact uw nalatenschap kan maken voor mensen die het zo hard nodig hebben.</p>
 
                     <form id="contactForm">
                         <div class="form-group">
@@ -791,17 +989,70 @@
                 </div>
             </section>
 
+            <!-- Waarom nalaten section -->
+            <section class="waarom-section">
+                <h3>Waarom nalaten aan Amref Health Africa?</h3>
+                <p class="subtitle">Met nalaten aan Amref Health Africa kiest u voor blijvende verbetering van de gezondheidszorg in Afrika.</p>
+                <ul>
+                    <li>Amref Health Africa is de grootste gezondheidsorganisatie van Afrika</li>
+                    <li>Al meer dan 65 jaar actief voor duurzame zorg in Afrika</li>
+                    <li>Erkend goed doel (ANBI &amp; CBF)</li>
+                </ul>
+                <p class="closing">Uw nalatenschap komt ten goede aan structurele oplossingen voor betere zorg.</p>
+            </section>
+
+            <!-- Blijvend verschil section -->
+            <section class="blijvend-section">
+                <h3>Blijvend verschil maken, ook later</h3>
+                <p>Veel mensen willen iets goeds achterlaten voor volgende generaties. Met een nalatenschap aan Amref leeft uw betrokkenheid voort in betere zorg, bescherming en kansen voor vooral vrouwen en kinderen in Afrika.</p>
+                <p>Een nalatenschap is een persoonlijk gebaar van betekenis — dat blijft doorwerken.</p>
+                <button class="blijvend-cta" type="button" id="blijvendCta">Ontvang informatie over nalaten aan Amref Health Africa</button>
+            </section>
+
+            <!-- FAQ section -->
+            <section class="faq-section">
+                <h3>Veelgestelde vragen</h3>
+
+                <details class="faq-item">
+                    <summary>Kan ik zelf kiezen welk bedrag ik wil nalaten?</summary>
+                    <p>Ja, u kunt een vast bedrag, percentage of specifiek deel van uw nalatenschap bestemmen aan Amref Health Africa. De genoemde bedragen zijn voorbeelden. Ook met andere bedragen kunt u deze projecten steunen.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Moet ik direct beslissen om aan Amref Health Africa na te laten?</summary>
+                    <p>Nee, u vraagt alleen informatie aan en dat is geheel vrijblijvend. U bepaalt zelf of en wanneer u stappen zet.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Moet ik Amref Health Africa informeren als ik dat opneem in mijn testament?</summary>
+                    <p>Dat is niet verplicht, maar mag wel. Zo kunnen wij uw wensen goed vastleggen.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Kunnen mijn familie en dierbaren ook erven als ik nalaat aan Amref Health Africa?</summary>
+                    <p>Zeker. Veel mensen combineren een nalatenschap aan familie met een gift aan een goed doel. U kunt zelf bepalen aan wie u hoeveel wilt nalaten.</p>
+                </details>
+            </section>
+
             <footer class="footer">
                 <img src="https://pmdubdmaghyvibnopgcb.supabase.co/storage/v1/object/public/amref-images/amref-logo.png" alt="Amref Health Africa" class="footer-logo">
                 <div class="footer-text">
                     <strong>Amref Health Africa</strong>
                     Duurzame gezondheidszorg in Afrika sinds 1957<br>
                     Een Afrikaanse organisatie met 68 jaar ervaring<br><br>
-                    Dit zijn echte projecten en laten zien hoe uw geld ingezet kan worden.<br> 
+                    Dit zijn echte projecten en laten zien hoe uw geld ingezet kan worden.<br>
                     Uw nalatenschap komt terecht daar waar het het hardst nodig is
                 </div>
             </footer>
         </main>
+    </div>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta" id="stickyCta">
+        <div class="sticky-cta-text">
+            <span>Ontvang meer informatie over nalaten aan Amref Health Africa</span>
+            <span class="arrow">&rarr;</span>
+        </div>
     </div>
 
     <script>
@@ -832,12 +1083,10 @@
             toastMessage.textContent = message;
             toast.className = 'toast-notification ' + type;
 
-            // Show toast
             setTimeout(() => {
                 toast.classList.add('show');
             }, 10);
 
-            // Hide toast after 4 seconds
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 4000);
@@ -846,34 +1095,46 @@
         // Impact data voor elke donatie
         const impactData = {
             1000: {
-                title: "Bescherm de kleintjes",
-                description: "Uw nalatenschap kan ervoor zorgen dat kinderen in Zuid-Soedan worden beschermd tegen ernstige ziektes als difterie, tetanus en kinkhoest; aandoeningen die in Nederland bijna niet meer voorkomen. Zo helpt u hen gezond opgroeien. Voorbeeld: met \u20AC 1.000 kunnen 125 kinderen worden gevaccineerd: een blijvende investering in hun toekomst.",
-                counter: { number: 125, text: "kinderen gevaccineerd" }
+                title: "Vaccineer de kleintjes",
+                description: "Uw nalatenschap kan ervoor zorgen dat kinderen in Zuid-Soedan worden beschermd tegen ernstige ziektes als difterie, tetanus en kinkhoest; aandoeningen die in Nederland bijna niet meer voorkomen. Zo helpt u hen gezond opgroeien.\n\nVoorbeeld: met \u20AC 1.000 kunnen 125 kinderen worden gevaccineerd: een blijvende investering in hun toekomst.",
+                counter: { number: 125, text: "kinderen gevaccineerd" },
+                cta: "Ontvang meer informatie"
             },
-            5025: {
-                title: "Een eigen wc",
-                description: "Met uw nalatenschap helpt u kinderen en volwassenen in Tanzania beschermen tegen diarree; een ziekte waardoor elke dag honderden kinderen overlijden. U stelt gezinnen in staat zelf een wc te bouwen: duurzaam, trots en eigenaarschap staan centraal. Voorbeeld: met \u20AC 5.000 kunnen 75 gezinnen worden geholpen zelf een wc te realiseren, wat betekent dat honderden mensen niet langer onnodig ziek worden.",
-                counter: { number: 75, text: "gezinnen met een veilige wc" }
+            5000: {
+                title: "Een eigen WC",
+                description: "Met uw nalatenschap helpt u kinderen en volwassen in Tanzania beschermen tegen diarree; een ziekte waardoor elke dag honderden kinderen overlijden. U stelt gezinnen in staat zelf een wc te bouwen: duurzaam, trots en eigenaarschap staan centraal.\n\nVoorbeeld: met \u20AC 5.000 kunnen 75 gezinnen worden geholpen zelf een wc te realiseren, wat betekent dat honderden mensen die niet langer onnodig ziek worden.",
+                counter: { number: 75, text: "gezinnen met een veilige wc" },
+                cta: "Ontvang meer informatie"
             },
             12000: {
-                title: "Verpleegsters in opleiding",
-                description: "Zet uw nalatenschap in om meer zorgverleners op te leiden. In Zambia is er slechts 2,1 verlos- of verpleegkundige per 1.000 inwoners. Ter vergelijking: in Nederland is dit aantal 11,7! Door het tekort aan zorgpersoneel overlijden jaarlijks duizenden mensen aan ziekten die eenvoudig te behandelen of voorkomen zijn. Voorbeeld: met \u20AC 12.000 krijgen 20 jonge vrouwen de kans om een jaar lang verpleegkunde te studeren. Zo kunnen zij duizenden mensen de zorg bieden die ze verdienen.",
-                counter: { number: 20, text: "verpleegsters opgeleid" }
+                title: "Verpleegkundigen opleiden",
+                description: "Zet uw nalatenschap in om meer zorgverleners op te leiden. In Zambia is er slechts 2,1 verlos- of verpleegkundige per 1.000 inwoners. Ter vergelijking: in Nederland is dit aantal 11,7!\nDoor het tekort aan zorgpersoneel overlijden jaarlijks duizenden mensen aan ziekten die eenvoudig te behandelen of voorkomen zijn.\n\nVoorbeeld: met \u20AC 12.000 krijgen 20 jonge vrouwen de kans om een jaar lang verpleegkunde te studeren. Zo kunnen zij duizenden mensen de zorg bieden die ze verdienen.",
+                counter: { number: 20, text: "verpleegkundigen opgeleid" },
+                cta: "Ontvang meer informatie"
             },
             21100: {
-                title: "'s Nachts ook veilig bevallen",
-                description: "Breng licht in de duisternis met uw nalatenschap. Veel kleine klinieken in Kenia hebben last van stroomuitval. Medische apparatuur valt daardoor uit en verloskundigen moeten bij het licht van een zaklamp bevallingen begeleiden. Met alle risico's van dien. Voorbeeld: met \u20AC 21.100 krijgt een kliniek in een afgelegen gebied zonnepanelen. Hierdoor kunnen ook 's nachts moeders veilig bevallen en baby's gezond ter wereld komen.",
-                counter: { number: 1200, text: "mensen per maand geholpen" }
+                title: "Altijd hulp door zonnepanelen",
+                description: "Breng licht in de duisternis met uw nalatenschap. Veel kleine klinieken in Kenia hebben last van stroomuitval. Medische apparatuur valt daardoor uit en verloskundigen moeten bij het licht van een zaklamp bevallingen begeleiden. Met alle risico's van dien.\n\nVoorbeeld: met \u20AC 21.100 krijgt een kliniek in een afgelegen gebied zonnepanelen. Hierdoor kunnen ook 's nachts moeders veilig bevallen en baby's gezond ter wereld komen.",
+                counter: { number: 1200, text: "mensen per maand geholpen" },
+                cta: "Ontvang meer informatie"
             },
             50400: {
-                title: "Zorg in de meest afgelegen gebieden",
-                description: "Met uw nalatenschap brengt u zorg naar de meest afgelegen gebieden. In het noorden van Ethiopi\u00EB is na jaren van oorlog de gezondheidszorg ingestort. Hele dorpen hebben geen toegang tot zorg. Vrouwen bevallen zonder hulp en ondervoede kinderen blijven vaak onbehandeld. Voorbeeld: met \u20AC 50.400 brengt u zorg naar 17.000 mensen in afgelegen gebieden. Uw nalatenschap zorgt voor hoop en herstel waarmee u bouwt aan vrede en toekomstperspectief voor velen.",
-                counter: { number: 17000, text: "mensen bereikt met zorg" }
+                title: "Zorg in afgelegen gebieden",
+                description: "Met uw nalatenschap brengt u zorg naar de meest afgelegen gebieden. In het noorden van Ethiopi\u00EB is na jaren van oorlog de gezondheidszorg ingestort. Hele dorpen hebben geen toegang tot zorg. Vrouwen bevallen zonder hulp en ondervoede kinderen blijven vaak onbehandeld.\n\nVoorbeeld: met \u20AC 50.400 brengt u zorg naar 17.000 mensen in afgelegen gebieden. Uw nalatenschap zorgt voor hoop en herstel waarmee u bouwt aan vrede en toekomstperspectief voor velen.",
+                counter: { number: 17000, text: "mensen bereikt met zorg" },
+                cta: "Ontvang meer informatie"
             },
             146000: {
                 title: "Meisjes blijven op school",
-                description: "Uw nalatenschap maakt een watersysteem mogelijk, waardoor hele gemeenschappen er op vooruit gaan, met name meisjes en jonge vrouwen. In veel Afrikaanse landen is het hun taak om water te halen waarvoor zij elke dag soms wel 12 kilometer moeten lopen. Dat betekent geen tijd voor school of werk. Voorbeeld: met \u20AC 146.000 maakt u een duurzaam watersysteem mogelijk waarmee ruim 3.500 mensen toegang krijgen tot schoon en veilig drinkwater, met als gevolg dat meisjes naar school kunnen blijven gaan en gezinnen gezonder leven, generatie na generatie.",
-                counter: { number: 3500, text: "mensen 15 jaar lang voorzien van water" }
+                description: "Uw nalatenschap maakt een watersysteem mogelijk, waardoor hele gemeenschappen er op vooruit gaan, met name meisjes en jonge vrouwen. In veel Afrikaanse landen, zo ook in Kenia, is het hun taak om water te halen waarvoor zij elke dag soms wel 12 kilometer moeten lopen. Dat betekent geen tijd voor school of werk. Bovendien lopen ze onderweg risico op geweld of ziekte.\n\nVoorbeeld: met \u20AC 146.000 maakt u een duurzaam watersysteem mogelijk waarmee ruim 3.500 mensen toegang krijgen tot schoon en veilig drinkwater, met als gevolg dat meisjes naar school kunnen blijven gaan, vrouwen tijd hebben om te werken en gezinnen gezonder leven, generatie na generatie.",
+                counter: { number: 3500, text: "mensen 15 jaar lang voorzien van water" },
+                cta: "Ontvang meer informatie"
+            },
+            0: {
+                title: "Stop meisjesbesnijdenis!",
+                description: "Elk jaar lopen miljoenen meisjes het risico om besneden te worden en elke 12 minuten sterft er een meisje als gevolg van besnijdenis. Wat bedoeld is als een traditie, heeft levenslange gevolgen: pijn, infecties, complicaties bij bevallingen en psychisch trauma. Voor veel meisjes betekent de besnijdenis ook het einde van hun jeugd, want na deze ingreep worden ze vaak vroeg uitgehuwelijkt en raken ze jong zwanger. Dit beperkt hun kansen op onderwijs en een zelfstandig bestaan. Meisjesbesnijdenis is een diepgewortelde praktijk, maar verandering is mogelijk.\n\nWil u weten welke impact uw nalatenschap kan maken in de strijd tegen meisjesbesnijdenis?",
+                counter: null,
+                cta: "Ja, ik ontvang graag meer informatie"
             }
         };
 
@@ -882,48 +1143,73 @@
         const impactDisplay = document.getElementById('impactDisplay');
         const impactTitle = document.getElementById('impactTitle');
         const impactDescription = document.getElementById('impactDescription');
+        const impactCta = document.getElementById('impactCta');
         const impactCounter = document.getElementById('impactCounter');
         const counterNumber = document.getElementById('counterNumber');
         const counterText = document.getElementById('counterText');
         const contactForm = document.getElementById('contactForm');
+        const formSection = document.getElementById('formSection');
+
+        // Scroll to impact blocks when pill is clicked
+        document.getElementById('scrollToPill').addEventListener('click', function() {
+            formSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+
+        // Sticky CTA scrolls to form
+        document.getElementById('stickyCta').addEventListener('click', function() {
+            formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Blijvend verschil CTA scrolls to form
+        document.getElementById('blijvendCta').addEventListener('click', function() {
+            formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Impact CTA scrolls to form
+        impactCta.addEventListener('click', function() {
+            formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
 
         // Event listeners voor bedrag selectie
         amountCards.forEach(card => {
             card.addEventListener('click', function() {
-            // Remove active class from all cards
-            amountCards.forEach(c => c.classList.remove('selected'));
+                // Remove active class from all cards
+                amountCards.forEach(c => c.classList.remove('selected'));
 
-            // Add active class to clicked card
-            this.classList.add('selected');
+                // Add active class to clicked card
+                this.classList.add('selected');
 
-           // Get selected amount and location
-            const amount = parseInt(this.dataset.amount);
-            const location = this.dataset.location;
-            const project = this.dataset.project;
+                // Get selected amount and location
+                const amount = parseInt(this.dataset.amount);
+                const location = this.dataset.location;
+                const project = this.dataset.project;
 
-            // Store globally for form submission
-            selectedAmount = amount;
-            selectedLocation = location;
-            selectedProject = project;
+                // Store globally for form submission
+                selectedAmount = amount;
+                selectedLocation = location;
+                selectedProject = project;
 
-            // Push to dataLayer for GTM
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'donation_option_click',
-                'donation_amount': amount,
-                'donation_location': location,
-                'donation_project': project,
-                'donation_amount_formatted': '€' + amount.toLocaleString()
-            });
+                // Push to dataLayer for GTM
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'donation_option_click',
+                    'donation_amount': amount,
+                    'donation_location': location,
+                    'donation_project': project,
+                    'donation_amount_formatted': amount > 0 ? ('\u20AC' + amount.toLocaleString()) : 'n.v.t.'
+                });
 
-        // Show impact
-        showImpact(amount);
+                // Show impact
+                showImpact(amount);
 
                 // Google Analytics tracking
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'amount_selected', {
                         'event_category': 'calculator',
-                        'event_label': `€${amount.toLocaleString()}`,
+                        'event_label': amount > 0 ? ('\u20AC' + amount.toLocaleString()) : project,
                         'value': amount
                     });
                 }
@@ -938,13 +1224,20 @@
                 impactTitle.textContent = impact.title;
                 impactDescription.textContent = impact.description;
 
+                // Update CTA text
+                impactCta.textContent = impact.cta;
+
                 // Show impact display
                 impactDisplay.classList.add('active');
 
-                // Animate counter
-                animateCounter(impact.counter.number, impact.counter.text);
+                // Show or hide counter based on whether this impact has one
+                if (impact.counter) {
+                    animateCounter(impact.counter.number, impact.counter.text);
+                } else {
+                    impactCounter.style.display = 'none';
+                }
 
-                // Smooth scroll to impact display (especially important on mobile)
+                // Smooth scroll to impact display
                 setTimeout(() => {
                     impactDisplay.scrollIntoView({
                         behavior: 'smooth',
