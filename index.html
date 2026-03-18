@@ -788,8 +788,18 @@
 
                     <form id="contactForm">
                         <div class="form-group">
-                            <label for="fullName">Volledige naam</label>
-                            <input type="text" id="fullName" name="fullName" placeholder="Bijvoorbeeld: Jan de Vries" required>
+                            <label for="voornaam">Voornaam</label>
+                            <input type="text" id="voornaam" name="voornaam" placeholder="Bijvoorbeeld: Jan" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tussenvoegsel">Tussenvoegsel</label>
+                            <input type="text" id="tussenvoegsel" name="tussenvoegsel" placeholder="Bijvoorbeeld: de">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="achternaam">Achternaam</label>
+                            <input type="text" id="achternaam" name="achternaam" placeholder="Bijvoorbeeld: Vries" required>
                         </div>
 
                         <div class="form-group">
@@ -989,7 +999,7 @@
             const data = Object.fromEntries(formData);
 
             // Basic validation
-            if (!data.fullName || !data.email) {
+            if (!data.voornaam || !data.achternaam || !data.email) {
                 showToast('Vul alle verplichte velden in.', 'error');
                 return;
             }
@@ -1017,7 +1027,9 @@
                     .from('nalatenschap_leads')
                     .insert([
                         {
-                            full_name: data.fullName,
+                            voornaam: data.voornaam,
+                            tussenvoegsel: data.tussenvoegsel || '',
+                            achternaam: data.achternaam,
                             email: data.email,
                             selected_amount: selectedAmount,
                             selected_location: selectedLocation
